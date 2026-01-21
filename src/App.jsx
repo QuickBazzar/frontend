@@ -11,6 +11,9 @@ import RetailerLayout from './pages/Retailer/RetailerLayout';
 import AdminHome from './pages/Admin/AdminHome';
 import WholesalerHome from './pages/WholeSaler/WholeSalerHome';
 
+import Profile from "./pages/Retailer/pages/Profile";
+import CreateProfile from "./pages/Retailer/pages/CreateProfile";
+import Dashboard from "./pages/Retailer/pages/Dashboard";
 
 
 
@@ -44,7 +47,16 @@ function App() {
           >
 
             {/* <Route path='profile' /> */}
-            
+            <Route index element={<Dashboard />} />
+            <Route path="profile" element={<Profile />} />
+            <Route
+              path="/retailer/edit-profile"
+              element={
+                <RoleRoute allowedRoles={["RETAILER"]}>
+                  <CreateProfile />
+                </RoleRoute>
+              }
+            />
 
           </Route>
 
