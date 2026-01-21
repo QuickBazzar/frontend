@@ -6,7 +6,8 @@ import Signin from './pages/signin';
 import Signup from './pages/signup';
 import { ToastContainer } from 'react-toastify';
 
-import RetailerHome from './pages/Retailer/RetailerHome';
+// import RetailerHome from './pages/Retailer/RetailerHome';
+import RetailerLayout from './pages/Retailer/RetailerLayout';
 import AdminHome from './pages/Admin/AdminHome';
 import WholesalerHome from './pages/WholeSaler/WholeSalerHome';
 
@@ -37,7 +38,7 @@ function App() {
           <Route path='/retailer'
             element={
               <RoleRoute allowedRoles={['RETAILER']}>
-                <RetailerHome />
+                <RetailerLayout />
               </RoleRoute>
             }
           >
