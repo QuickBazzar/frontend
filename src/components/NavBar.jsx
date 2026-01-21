@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
 import { UserContext } from '../App'
+import { ROLES } from '../utils/roles'
 
 function Navbar() {
   const navigate = useNavigate()
@@ -14,10 +15,17 @@ function Navbar() {
     navigate('/')
   }
 
+  const getHomePath = () => {
+    if(user.role == ROLES.ADMIN) return "/admin"
+    if(user.role == ROLES.RETAILER) return "/retailer"
+    if(user.role == ROLES.WHOLESALER) return "/wholesaler"
+    return "/"
+  }
+
   return (
     <nav className="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">
+        <Link className="navbar-brand" to={getHomePath()}>
           QuickBazzr
         </Link>
 
@@ -35,8 +43,8 @@ function Navbar() {
 
             {user.role === "RETAILER" && (
               <>
-                {/* <Link className="nav-link" to="/retailer">Dashboard</Link>
-                <Link className="nav-link" to="/retailer/orders">Orders</Link>
+                {/* <Link className="nav-link" to="/retailer">Dashboard</Link> */}
+                {/* <Link className="nav-link" to="/retailer/orders">Orders</Link>
                 <Link className="nav-link" to="/retailer/profile">Profile</Link> */}
               </>
             )}
@@ -44,8 +52,8 @@ function Navbar() {
 
             {user.role === "ADMIN" && (
               <>
-                {/* <Link className="nav-link" to="/admin">Dashboard</Link>
-                <Link className="nav-link" to="/admin/users">Users</Link>
+                <Link className="nav-link" to="/admin/getAllRetailers">Retailers</Link>
+                {/* <Link className="nav-link" to="/admin/users">Users</Link>
                 <Link className="nav-link" to="/admin/reports">Reports</Link> */}
               </>
             )}
@@ -60,10 +68,7 @@ function Navbar() {
             
             <button
               className="nav-link btn btn-link text-white"
-              onClick={logout}
-            >
-              Logout
-            </button>
+              onClick={logout}>Logout</button>
 
           </div>
         </div>

@@ -9,7 +9,6 @@ const RoleRoute = ({ allowedRoles, children }) => {
     return <Navigate to="/" />
   }
 
-
   if (!allowedRoles.includes(user.role)) {
     return <Navigate to="/unauthorized" />
   }
