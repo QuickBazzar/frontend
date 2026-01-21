@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useContext } from 'react'
 import { UserContext } from '../App'
 import { useNavigate, Link } from 'react-router-dom'
-import { loginUser } from '../services/user'
+import { loginUser } from '../services/auth'
 import { toast } from 'react-toastify'
 
 
