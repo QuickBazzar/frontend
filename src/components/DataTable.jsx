@@ -1,6 +1,4 @@
-import React, { act } from 'react'
-
-function DataTable({columns, data, onAction}) {
+function DataTable({columns, data, actions}) {
   return (
     <table className='table table-bordered table-hover'>
       <thead className='table-dark'>
@@ -8,14 +6,15 @@ function DataTable({columns, data, onAction}) {
           {columns.map((col) => (
             <th key={col.key}>{col.label}</th>
           ))}
-          {onAction && <th>Action</th>}
+          {actions && <th>Action</th>}
         </tr>
       </thead>
 
       <tbody>
         {data.length === 0 ? (
           <tr>
-            <td colSpan={columns.length + 1} className='text-center'>
+            <td colSpan={columns.length + (actions ? 1 : 0)} 
+            className='text-center'>
               No data available
             </td>
           </tr>

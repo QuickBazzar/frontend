@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import DataTable from '../../components/DataTable'
-import { getAllRetailers } from '../../services/admin/retailer'
+import { deleteRetailer, getAllRetailers } from '../../services/admin/retailer'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 const RetailersList = () => {
     const [retailers, setRetailers] = useState([])
     const [loading, setLoading] = useState(true)
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         loadRetailers()
@@ -21,21 +25,46 @@ const RetailersList = () => {
     }
 
     const columns = [
-        {label: "ID", key: "UserID"},
-        {label: "Name", key: "Name"},
-        {label: "Email", key: "Email"},
-        {label: "Role", key: "Role"},
+        { label: "Retailer ID", key: "RetailerID" },
+        { label: "Shop Name", key: "ShopName" },
+        { label: "Contact", key: "ContactNumber" },
+        { label: "City", key: "Address" },
+        { label: "Wallet (₹)", key: "WalletBalance" },
+        { label: "Plan", key: "SubscriptionPlan" },
     ]
 
     const handelUpdate = (retailer) => {
-        console.log("Update retailer: ", retailer)
+        navigate(`/admin/retailers/edit/${retailer.RetailerID}`,{
+            state: retailer
+        })
     }
 
     const handelDelete = async (retailer) => {
-        if(!window.confirm(`Delete ${retailer.Name}?`)) return
+        if(!window.confirm(`Do You Want To Delete ${retailer.ShopName}?`)) return
 
-        const 
+        const result = await deleteRetailer(retailer.UserID)
+
+        if(result && result.status == "success"){
+            toast.success("Retailer Deleted Successfully")
+            loadRetailers()
+        }
+        else{
+            toast.error("Failed to delete retailer")
+        }
     }
+
+    const actions = [
+    {
+        label: "Update",
+        className: "btn-warning",
+        onClick: handelUpdate,
+    },
+    {
+        label: "Delete",
+        className: "btn-danger",
+        onClick: handelDelete,
+    },
+    ]
 
     if(loading){
         return <p>Loading retailers...</p>
@@ -44,7 +73,7 @@ const RetailersList = () => {
   return (
     <div className='container mt-3'>
         <h3>Retailers List</h3>
-        <DataTable columns={columns} data={retailers}/>
+        <DataTable columns={columns} data={retailers} actions={actions}/>
     </div>
   )
 }

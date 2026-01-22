@@ -10,6 +10,7 @@ import AdminHome from './pages/Admin/AdminHome';
 import WholesalerHome from './pages/WholeSaler/WholeSalerHome';
 import RetailersList from './pages/Admin/RetailersList';
 import Navbar from './components/NavBar';
+import EditRetailer from './pages/Admin/EditRetailer';
 
 export const UserContext = createContext()
 function App() {
@@ -49,11 +50,11 @@ function App() {
             element={
               <RoleRoute allowedRoles={['ADMIN']}>
                 <AdminHome />
-                {/* <RetailersList /> */}
               </RoleRoute>
             }
           >
             <Route path='getAllRetailers' element={<RetailersList />}/>
+            <Route path='retailers/edit/:id' element={<EditRetailer />} />
           </Route>
 
           <Route

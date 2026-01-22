@@ -15,13 +15,31 @@ export async function getAllRetailers() {
     }
 }
 
-export async function deleteRetailer() {
+export async function deleteRetailer(retailerId) {
     try {
-        const url = config.BASE_URL + '/admin/delete-user/${userId}'
-        const response = await axios.delete
+        const url = config.BASE_URL + `/admin/delete-retailer/${retailerId}`
+        const headers = {
+            Authorization:`Bearer ${sessionStorage.getItem('token')}`
+        }
+        const response = await axios.delete(url, {headers})
+        return response.data
     } catch (error) {
-        
+        toast.error("Delete Failed")
+        return null
     }
+}
 
+export async function updateRetailer(retailerId, data) {
+    try {
+        const url = config.BASE_URL + `/retailer/update/${retailerId}`
+        const headers = {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`
+        }
 
+        const response = await axios.put(url, data, {headers})
+
+        return response.data
+    } catch (error) {
+        return error.response?.data || null        
+    }
 }
