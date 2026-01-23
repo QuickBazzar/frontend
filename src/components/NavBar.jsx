@@ -52,7 +52,7 @@ function Navbar() {
 
             {user.role === "ADMIN" && (
               <>
-                <Link className="nav-link" to="/admin/getAllRetailers">Retailers</Link>
+                {/* <Link className="nav-link" to="/admin/getAllRetailers">Retailers</Link> */}
                 {/* <Link className="nav-link" to="/admin/users">Users</Link>
                 <Link className="nav-link" to="/admin/reports">Reports</Link> */}
               </>

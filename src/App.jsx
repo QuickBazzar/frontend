@@ -11,6 +11,9 @@ import WholesalerHome from './pages/WholeSaler/WholeSalerHome';
 import RetailersList from './pages/Admin/RetailersList';
 import Navbar from './components/NavBar';
 import EditRetailer from './pages/Admin/EditRetailer';
+import AdminDashboard from './pages/Admin/AdminDashboard';
+import UsersList from './pages/Admin/UsersList';
+import EditUser from './pages/Admin/EditUser';
 
 export const UserContext = createContext()
 function App() {
@@ -53,8 +56,11 @@ function App() {
               </RoleRoute>
             }
           >
+            <Route index element={<AdminDashboard />} />
             <Route path='getAllRetailers' element={<RetailersList />}/>
             <Route path='retailers/edit/:id' element={<EditRetailer />} />
+            <Route path='getAllUsers' element={<UsersList />}/>
+            <Route path='user/edit/:id' element={<EditUser />}/>
           </Route>
 
           <Route
