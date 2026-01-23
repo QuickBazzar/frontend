@@ -43,3 +43,19 @@ export async function updateRetailer(retailerId, data) {
         return error.response?.data || null        
     }
 }
+
+// getRetailerById
+export async function getRetailerById(retailerId) {
+    try {
+        const url = config.BASE_URL +`/admin/find/${retailerId}`
+        const headers = {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`
+        }
+
+        const response = await axios.get(url, {headers})
+
+        return response.data
+    } catch (error) {
+        return error.response?.data || null
+    }
+}

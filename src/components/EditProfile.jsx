@@ -2,26 +2,19 @@ import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 
-const EditProfile = ({ initialData, onSubmit, backTo }) => {
+const EditProfile = ({title, fields, initialData, onSubmit, backTo }) => {
   const navigate = useNavigate()
-
-  const [form, setForm] = useState({
-    shopName: "",
-    contactNumber: "",
-    address: "",
-    gstNumber: "",
-  })
+  const [form, setForm] = useState({})
 
   useEffect(() => {
-    if (initialData) {
-      setForm({
-        shopName: initialData.ShopName || "",
-        contactNumber: initialData.ContactNumber || "",
-        address: initialData.Address || "",
-        gstNumber: initialData.GSTNumber || "",
+    if (initialData && fields) {
+      const data = {}
+      fields.forEach((field) => {
+        data[field.name] = initialData[field.mapKey] || ""
       })
+      setForm(data)
     }
-  }, [initialData])
+  }, [initialData, fields])
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -46,50 +39,24 @@ const EditProfile = ({ initialData, onSubmit, backTo }) => {
         <div className="col-md-6 col-lg-5">
           <div className="card shadow-sm">
             <div className="card-body">
-              <h4 className="card-title mb-3 text-center">
-                Update Retailer
+              <h4 className="card-title mb-3 text-center">{title}
               </h4>
 
               <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label className="form-label">Shop Name</label>
-                  <input
-                    className="form-control form-control-sm"
-                    name="shopName"
-                    value={form.shopName}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">Contact Number</label>
-                  <input
-                    className="form-control form-control-sm"
-                    name="contactNumber"
-                    value={form.contactNumber}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">Address</label>
-                  <input
-                    className="form-control form-control-sm"
-                    name="address"
-                    value={form.address}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">GST Number</label>
-                  <input
-                    className="form-control form-control-sm"
-                    name="gstNumber"
-                    value={form.gstNumber}
-                    onChange={handleChange}
-                  />
-                </div>
+                {fields.map((field) => (
+                  <div className="mb-3" key={field.name}>
+                    <label className="form-label">{field.label}</label>
+                    <input
+                      type={field.type || "text"}
+                      className={`form-control form-control-sm ${field.readOnly ? "bg-light" : ""}`}
+                      name={field.name}
+                      value={form[field.name] || ""}
+                      onChange={handleChange}
+                      readOnly={field.readOnly}
+                      disabled={field.disabled}
+                    />
+                  </div>
+                ))}
 
                 <div className="d-flex justify-content-end">
                   <button className="btn btn-success btn-sm">
