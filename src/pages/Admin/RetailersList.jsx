@@ -31,6 +31,7 @@ const RetailersList = () => {
         { label: "City", key: "Address" },
         { label: "Wallet (₹)", key: "WalletBalance" },
         { label: "Plan", key: "SubscriptionPlan" },
+        { label: "GST Number", key: "GSTNumber"},
     ]
 
     const handelUpdate = (retailer) => {

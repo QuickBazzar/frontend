@@ -24,6 +24,12 @@ const AdminSidebar = () => {
                     </NavLink>
                 </li>
 
+                <li className="nav-item">
+                    <NavLink to="/admin/getAllWholesalers" className="nav-link text-white">
+                    Wholesalers
+                    </NavLink>
+                </li>
+
             </ul>
         </div>
     )
