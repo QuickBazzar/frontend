@@ -14,6 +14,9 @@ import WholesalerHome from './pages/WholeSaler/WholeSalerHome';
 import Profile from "./pages/Retailer/pages/Profile";
 import CreateProfile from "./pages/Retailer/pages/CreateProfile";
 import Dashboard from "./pages/Retailer/pages/Dashboard";
+import Cart from "./pages/Retailer/pages/Cart";
+import RetailerProfileGuard from "./components/retailercomponents/RetailerProfileGuard";
+
 
 
 
@@ -41,7 +44,9 @@ function App() {
           <Route path='/retailer'
             element={
               <RoleRoute allowedRoles={['RETAILER']}>
-                <RetailerLayout />
+                <RetailerProfileGuard>
+                  <RetailerLayout />
+                </RetailerProfileGuard>
               </RoleRoute>
             }
           >
@@ -49,6 +54,7 @@ function App() {
             {/* <Route path='profile' /> */}
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="cart" element={<Cart />} />
             <Route
               path="/retailer/edit-profile"
               element={
