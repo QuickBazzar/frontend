@@ -6,6 +6,8 @@ import { toast } from "react-toastify"
 
 const WholesalerList = () => {
     const [wholesalers, setWholesalers] = useState([])
+    const [filteredWholesalers, setFilteredWholesalers] = useState([])
+    const [search, setSearch] = useState('')
     const [loading, setLoading] = useState(true)
 
     const navigate = useNavigate()
@@ -14,14 +16,33 @@ const WholesalerList = () => {
         loadWholesalers()
     }, [])
 
+    useEffect(() => {
+        applyFilters()
+    }, [search, wholesalers])
+
     const loadWholesalers = async () => {
         const result = await getAllWholesalers()
 
         if(result && result.status === "success"){
             setWholesalers(result.data)
+            setFilteredWholesalers(result.data)
         }
 
         setLoading(false)
+    }
+
+    const applyFilters = () => {
+        let data = [...wholesalers]
+
+        if(search.trim() !== ''){
+            data = data.filter(w => 
+                w.BusinessName.toLowerCase().includes(search.toLowerCase()) ||
+                w.ContactNumber?.includes(search) ||
+                w.Address?.toLowerCase().includes(search.toLowerCase())
+            )
+        }
+
+        setFilteredWholesalers(data)
     }
 
     const columns = [
@@ -74,7 +95,20 @@ const WholesalerList = () => {
     return (
         <div className='container mt-3'>
             <h3>Wholesalers List</h3>
-            <DataTable columns={columns} data={wholesalers} actions={actions}/>
+
+            <div className='row mb-3'>
+                <div className='col-md-4'>
+                    <input 
+                        type="text"
+                        className='form-control form-control-sm'
+                        placeholder='Search by business, city or contact'
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)} 
+                    />
+                </div>
+            </div>
+
+            <DataTable columns={columns} data={filteredWholesalers} actions={actions}/>
         </div>
     )
 }
