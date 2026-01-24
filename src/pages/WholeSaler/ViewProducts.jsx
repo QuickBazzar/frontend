@@ -2,10 +2,18 @@ import { useEffect, useState } from 'react'
 import WholesalerNavbar from './WholesalerNavbar'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
-import { getAllProducts, deleteProduct } from '../../services/product'
+import {
+  getAllProducts,
+  deleteProduct,
+} from '../../services/product'
+
 
 function ViewProducts() {
   const [products, setProducts] = useState([])
+  const [filteredProducts, setFilteredProducts] = useState([])
+  const [categories, setCategories] = useState([])
+  const [selectedCategory, setSelectedCategory] = useState('')
+
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -16,12 +24,33 @@ function ViewProducts() {
     try {
       const response = await getAllProducts()
       if (response.data.status === 'success') {
-        setProducts(response.data.data)
+        const data = response.data.data
+        setProducts(data)
+        setFilteredProducts(data)
+
+        // 🔹 Auto-generate categories
+        const uniqueCategories = [
+          ...new Set(data.map(p => p.Category))
+        ]
+        setCategories(uniqueCategories)
       } else {
         toast.error('Failed to load products')
       }
     } catch {
       toast.error('Server error')
+    }
+  }
+
+  // 🔹 Category filter logic
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category)
+
+    if (!category) {
+      setFilteredProducts(products)
+    } else {
+      setFilteredProducts(
+        products.filter(p => p.Category === category)
+      )
     }
   }
 
@@ -41,21 +70,15 @@ function ViewProducts() {
     }
   }
 
-  // 🔼 🔽 Stock change (UI only)
+  // UI only
   const handleStockChange = (productId, change) => {
-    setProducts(prev =>
+    setFilteredProducts(prev =>
       prev.map(p =>
         p.ProductID === productId
           ? { ...p, StockQuantity: Math.max(0, p.StockQuantity + change) }
           : p
       )
     )
-  }
-
-  // 🛒 ADD TO CART (API can be connected later)
-  const handleAddToCart = (product) => {
-    toast.success(`${product.ProductName} added to cart`)
-    // later → call addToCart API here
   }
 
   return (
@@ -65,12 +88,29 @@ function ViewProducts() {
       <div className="container mt-4">
         <h3 className="text-center mb-4">My Products</h3>
 
+        {/* 🔹 CATEGORY DROPDOWN */}
+        <div className="mb-3 d-flex justify-content-end">
+          <select
+            className="form-select w-25"
+            value={selectedCategory}
+            onChange={(e) => handleCategoryChange(e.target.value)}
+          >
+            <option value="">All Categories</option>
+            {categories.map((cat, index) => (
+              <option key={index} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div className="table-responsive">
           <table className="table table-bordered table-hover align-middle">
             <thead className="table-dark">
               <tr>
                 <th>Image</th>
                 <th>Name</th>
+                <th>Description</th>
                 <th>Category</th>
                 <th>Price</th>
                 <th className="text-center">Stock</th>
@@ -79,16 +119,15 @@ function ViewProducts() {
             </thead>
 
             <tbody>
-              {products.length === 0 ? (
+              {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="text-center">
+                  <td colSpan="7" className="text-center">
                     No products found
                   </td>
                 </tr>
               ) : (
-                products.map(p => (
+                filteredProducts.map(p => (
                   <tr key={p.ProductID}>
-                    {/* IMAGE */}
                     <td style={{ width: '120px' }}>
                       <img
                         src={`http://localhost:4000/productimages/${p.ProductImage}`}
@@ -98,16 +137,18 @@ function ViewProducts() {
                       />
                     </td>
 
-                    {/* NAME */}
                     <td className="fw-semibold">{p.ProductName}</td>
 
-                    {/* CATEGORY */}
+                    <td style={{ maxWidth: '250px' }}>
+                      <span className="text-muted">
+                        {p.Description || '—'}
+                      </span>
+                    </td>
+
                     <td>{p.Category}</td>
 
-                    {/* PRICE */}
-                    <td className="text-success fw-bold">₹ {p.Price}</td>
+                    <td className="fw-bold text-success">₹ {p.Price}</td>
 
-                    {/* STOCK */}
                     <td className="text-center text-nowrap">
                       <div className="d-flex justify-content-center align-items-center gap-2">
                         <button
@@ -129,16 +170,7 @@ function ViewProducts() {
                       </div>
                     </td>
 
-                    {/* ACTIONS */}
                     <td className="text-center text-nowrap">
-                      <button
-                        className="btn btn-outline-success btn-sm me-2"
-                        disabled={p.StockQuantity === 0}
-                        onClick={() => handleAddToCart(p)}
-                      >
-                        Add to Cart
-                      </button>
-
                       <button
                         className="btn btn-outline-primary btn-sm me-2"
                         onClick={() =>
