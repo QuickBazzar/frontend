@@ -15,7 +15,11 @@ import Profile from "./pages/Retailer/pages/Profile";
 import CreateProfile from "./pages/Retailer/pages/CreateProfile";
 import Dashboard from "./pages/Retailer/pages/Dashboard";
 import Cart from "./pages/Retailer/pages/Cart";
+import Orders from "./pages/Retailer/pages/Orders";
+
 import RetailerProfileGuard from "./components/retailercomponents/RetailerProfileGuard";
+import ProductsPage from "./pages/Retailer/products/ProductsPage";
+import ProductsByWholesaler from "./pages/Retailer/products/ProductsByWholesaler";
 
 
 
@@ -54,7 +58,10 @@ function App() {
             {/* <Route path='profile' /> */}
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="products" element={<ProductsPage />} />
+            <Route path="products/:wholesalerId" element={<ProductsByWholesaler />} />
             <Route path="cart" element={<Cart />} />
+            <Route path="orders" element={<Orders />} />
             <Route
               path="/retailer/edit-profile"
               element={
