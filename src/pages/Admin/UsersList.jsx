@@ -98,7 +98,7 @@ const UsersList = () => {
         <input 
             type="text"
             className='form-control form-control-sm'
-            placeholder='Search by shop, city or contact'
+            placeholder='Search by name, email and role'
             value={search}
             onChange={(e) => setSearch(e.target.value)} 
         />

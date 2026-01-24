@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom"
 
 const AdminSidebar = () => {
     return (
-        <div className="bg-dark text-white vh-100 p-3" style={{width: "220px"}}>
+        <div className="bg-dark text-white vh-auto p-3" style={{width: "200px"}}>
             <h5 className="mb-4">Admin Panel</h5>
 
             <ul className="nav flex-column">
