@@ -1,0 +1,62 @@
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { getAllProducts } from "../../services/product";
+import ProductCard from "../../components/ProductCard";
+
+function ProductList() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
+
+  const loadProducts = async () => {
+    setLoading(true);
+    const result = await getAllProducts();
+
+    if (result.status === "success" && Array.isArray(result.data)) {
+      console.log(result);
+      
+      setProducts(result.data);
+
+    } else {
+      toast.error("Failed to load products");
+    }
+    setLoading(false);
+  };
+
+  if (loading) {
+    return (
+      <div className="text-center mt-5">
+        <div className="spinner-border text-primary"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container">
+      <h4 className="mb-3">Available Products</h4>
+
+      <div className="row">
+        {products
+          .filter((p) => p.ProductID)   
+          .map((p) => (
+            <ProductCard
+              key={p.ProductID}          
+              pid={p.ProductID}
+              name={p.ProductName}
+              price={p.Price}
+              image={p.ProductImage}
+            />
+          ))}
+      </div>
+
+      {products.length === 0 && (
+        <p className="text-muted mt-3">No products available</p>
+      )}
+    </div>
+  );
+}
+
+export default ProductList;

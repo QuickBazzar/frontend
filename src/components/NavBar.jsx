@@ -21,6 +21,17 @@ function Navbar() {
           QuickBazzr
         </Link>
 
+        {/* Sidebar Toggle Button (Mobile only) */}
+        <button
+          className="btn btn-outline-light me-2 d-lg-none"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#retailerSidebar"
+        >
+          ☰
+        </button>
+
+        {/* Navbar Collapse Button */}
         <button
           className="navbar-toggler"
           type="button"
@@ -57,7 +68,7 @@ function Navbar() {
                 <Link className="nav-link" to="/wholesaler/orders">Orders</Link> */}
               </>
             )}
-            
+
             <button
               className="nav-link btn btn-link text-white"
               onClick={logout}

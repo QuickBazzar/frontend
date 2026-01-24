@@ -1,0 +1,31 @@
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  transition: width 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 80px;
+}
+
+.sidebar.collapsed span {
+  display: none;
+}
+
+/* Align icons center when collapsed */
+.sidebar.collapsed a {
+  justify-content: center;
+}
+
+/* Navbar menu icon */
+.menu-icon {
+  font-size: 22px;
+  cursor: pointer;
+  margin-right: 16px;
+}
+
+/* Navbar left */
+.navbar-left {
+  display: flex;
+  align-items: center;
+}

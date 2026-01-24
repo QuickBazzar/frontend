@@ -40,3 +40,8 @@
 .read-the-docs {
   color: #888;
 }
+
+.nav-link.active {
+  background-color: #0d6efd !important;
+  border-radius: 8px;
+}
