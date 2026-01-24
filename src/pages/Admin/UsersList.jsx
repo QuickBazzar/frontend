@@ -6,13 +6,20 @@ import { useNavigate } from 'react-router-dom'
 
 const UsersList = () => {
     const [users, setUsers] = useState([])
+    const [roleFilter, setRole] = useState('ALL')
+    const [filteredUsers, setFilteredUsers] = useState([])
+    const [search, setSearch] = useState('')
     const [loading, setLoading] = useState(true)
 
     const navigate = useNavigate()
 
     useEffect(() => {
         loadUsers()
-    }, [])
+    },[])
+
+    useEffect(() => {
+        applyFilters()
+    }, [search, roleFilter, users])
 
     const loadUsers = async () => {
         const result = await getAllUsers()
@@ -23,9 +30,26 @@ const UsersList = () => {
         setLoading(false)
     }
 
+    const applyFilters = () => {
+        let data = [...users]
+
+        if(search){
+            data = data.filter(u => 
+                u.Name.toLowerCase().includes(search.toLowerCase()) ||
+                u.Email.toLowerCase().includes(search.toLowerCase())
+            )
+        }
+
+        if(roleFilter !== 'ALL'){
+            data = data.filter(u => u.Role === roleFilter)
+        }
+
+        setFilteredUsers(data)
+    }
+
     const handleUpdate = (users) => {
         navigate(`/admin/user/edit/${users.UserID}`,{
-            state: users
+            state: { user: users },
         })
     }
 
@@ -70,7 +94,26 @@ const UsersList = () => {
   return (
     <div className='container mt-3'>
         <h3>Users List</h3>
-        <DataTable columns={columns} data={users} actions={actions} />
+
+        <input 
+            type="text"
+            className='form-control form-control-sm'
+            placeholder='Search by shop, city or contact'
+            value={search}
+            onChange={(e) => setSearch(e.target.value)} 
+        />
+
+        <select
+            className='form-select form-select-sm mt-3 mb-3'
+            value={roleFilter}
+            onChange={(e) => setRole(e.target.value)}
+        >
+            <option value="ALL">All Roles</option>
+            <option value="ADMIN">Admin</option>
+            <option value="RETAILER">Retailer</option>
+            <option value="WHOLESALER">Wholesaler</option>
+        </select>
+        <DataTable columns={columns} data={filteredUsers} actions={actions} />
     </div>
   )
 }

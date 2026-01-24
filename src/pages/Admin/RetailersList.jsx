@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom'
 
 const RetailersList = () => {
     const [retailers, setRetailers] = useState([])
+    const [filteredRetailers, setFilteredRetailers] = useState([])
+    const [search, setSearch] = useState('')
     const [loading, setLoading] = useState(true)
 
     const navigate = useNavigate()
@@ -14,14 +16,33 @@ const RetailersList = () => {
         loadRetailers()
     }, [])
 
+    useEffect(() => {
+        applyFilters()
+    }, [search, retailers])
+
     const loadRetailers = async () => {
         const result = await getAllRetailers()
 
         if(result && result.status === "success"){
             setRetailers(result.data)
+            setFilteredRetailers(result.data)
         }
 
         setLoading(false)
+    }
+
+    const applyFilters = () => {
+        let data = [...retailers]
+
+        if(search.trim() !== ''){
+            data = data.filter(r => 
+                r.ShopName.toLowerCase().includes(search.toLowerCase()) ||
+                r.ContactNumber?.includes(search) ||
+                r.Address?.toLowerCase().includes(search.toLowerCase())
+            )
+        }
+
+        setFilteredRetailers(data)
     }
 
     const columns = [
@@ -36,7 +57,7 @@ const RetailersList = () => {
 
     const handelUpdate = (retailer) => {
         navigate(`/admin/retailers/edit/${retailer.RetailerID}`,{
-            state: retailer
+            state: { retailer }
         })
     }
 
@@ -74,7 +95,20 @@ const RetailersList = () => {
   return (
     <div className='container mt-3'>
         <h3>Retailers List</h3>
-        <DataTable columns={columns} data={retailers} actions={actions}/>
+
+        <div className='row mb-3'>
+            <div className='col-md-4'>
+                <input 
+                    type="text"
+                    className='form-control form-control-sm'
+                    placeholder='Search by shop, city or contact'
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)} 
+                />
+            </div>
+        </div>
+
+        <DataTable columns={columns} data={filteredRetailers} actions={actions}/>
     </div>
   )
 }
