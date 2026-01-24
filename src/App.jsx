@@ -19,6 +19,8 @@ import { EditWholesaler } from './pages/Admin/Wholesaer/EditWholesaler';
 import CreateUser from './pages/Admin/User/CreateUser';
 import ProductsList from './pages/Admin/Products/ProductsList';
 import LowStockProducts from './pages/Admin/Products/LowStockProducts';
+import OrdersList from './pages/Admin/Orders/OrdersList';
+import { OrderDetails } from './pages/Admin/Orders/OrderDetails';
 
 export const UserContext = createContext()
 function App() {
@@ -71,6 +73,8 @@ function App() {
             <Route path='create-user' element={<CreateUser />}/>
             <Route path='products' element={<ProductsList />}/>
             <Route path='products/low-stock' element={<LowStockProducts />}/>
+            <Route path='orders' element={<OrdersList />}/>
+            <Route path='orders/:id' element={<OrderDetails />}/>
           </Route>
 
           <Route

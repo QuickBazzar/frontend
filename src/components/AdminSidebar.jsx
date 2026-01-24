@@ -48,6 +48,12 @@ const AdminSidebar = () => {
                     </NavLink>
                 </li>
 
+                <li className="nav-item">
+                    <NavLink to="/admin/orders" className="nav-link text-white" >
+                        Orders
+                    </NavLink>
+                </li>
+
             </ul>
         </div>
     )
