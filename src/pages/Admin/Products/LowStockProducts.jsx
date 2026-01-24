@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { lazy, useEffect, useState } from 'react'
 import { deleteProduct, getLowStockProducts, updateProductStatus } from '../../../services/admin/product'
 import { toast } from 'react-toastify'
 import ProductsList from './ProductsList';

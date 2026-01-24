@@ -68,6 +68,7 @@ const ProductsList = () => {
         {label: "Category", key: "Category"},
         {label: "Price", key: "Price"},
         {label: "Stock", key: "StockQuantity"},
+        {label: "Business Name", key: "BusinessName"},
         {label: "Active", key:"IsActive"},
     ]
 
@@ -96,7 +97,7 @@ const ProductsList = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
         />
-        
+
         <DataTable 
             columns={columns}
             data={filtered}  
