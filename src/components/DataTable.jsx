@@ -22,7 +22,8 @@ function DataTable({columns, data, actions}) {
           data.map((row, index) => (
             <tr key={index}>
               {columns.map((col) => (
-                <td key={col.key}>{row[col.key]}</td>
+                <td key={col.key}>
+                  {col.render ? col.render(row) : row[col.key]}</td>
               ))}
               {actions && (
                 <td>
