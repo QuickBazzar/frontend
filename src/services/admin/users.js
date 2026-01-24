@@ -1,6 +1,22 @@
 import axios from "axios";
 import config from "../../utils/config";
 import { toast } from "react-toastify";
+import CreateUser from './../../pages/Admin/CreateUser';
+
+export async function createUser(data) {
+    try {
+        const url = config.BASE_URL + `/user/web/signup`
+        const headers = {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`
+        }
+
+        const response = await axios.post(url, data, {headers})
+
+        return response.data
+    } catch (error) {
+        return error.response?.data || null
+    }
+}
 
 export async function getAllUsers() {
     const url = config.BASE_URL + `/admin/user/all`
