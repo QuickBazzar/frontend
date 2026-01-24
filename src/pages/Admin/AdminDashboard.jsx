@@ -29,6 +29,7 @@ export default function AdminDashboard() {
             <DashboardCard title="Retailers" value={summary.totalRetailers}/>
             <DashboardCard title="WholeSalers" value={summary.totalWholesalers} />
             <DashboardCard title="Total Orders" value={summary.totalOrders} />
+            <DashboardCard title="Total Products" value={summary.totalProducts}/>
             <DashboardCard
                 title="Total Revenue (₹)"
                 value={summary.totalRevenue ?? 0}
