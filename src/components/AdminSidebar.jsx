@@ -30,6 +30,12 @@ const AdminSidebar = () => {
                     </NavLink>
                 </li>
 
+                <li className="nav-item">
+                    <NavLink to="/admin/create-user" className="nav-link text-white" >
+                        Create User
+                    </NavLink>
+                </li>
+
             </ul>
         </div>
     )

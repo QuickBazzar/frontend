@@ -16,6 +16,7 @@ import UsersList from './pages/Admin/UsersList';
 import EditUser from './pages/Admin/EditUser';
 import WholesalerList from './pages/Admin/WholesalerList';
 import { EditWholesaler } from './pages/Admin/EditWholesaler';
+import CreateUser from './pages/Admin/CreateUser';
 
 export const UserContext = createContext()
 function App() {
@@ -65,6 +66,7 @@ function App() {
             <Route path='user/edit/:id' element={<EditUser />}/>
             <Route path='getAllWholesalers' element={<WholesalerList />}/>
             <Route path='wholesaler/edit/:id' element={<EditWholesaler />}/>
+            <Route path='create-user' element={<CreateUser />}/>
           </Route>
 
           <Route

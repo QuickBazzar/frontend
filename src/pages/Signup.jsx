@@ -70,7 +70,6 @@ function SignUp() {
         >
           <option value="RETAILER">RETAILER</option>
           <option value="WHOLESALER">WHOLESALER</option>
-          <option value="ADMIN">ADMIN</option>
         </select>
       </div>
 
