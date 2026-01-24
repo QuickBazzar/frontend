@@ -1,7 +1,7 @@
 import axios from "axios";
 import config from "../../utils/config";
 import { toast } from "react-toastify";
-import CreateUser from './../../pages/Admin/CreateUser';
+import CreateUser from '../../pages/Admin/User/CreateUser';
 
 export async function createUser(data) {
     try {

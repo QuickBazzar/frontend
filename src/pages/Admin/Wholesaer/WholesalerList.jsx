@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { deleteWholesaler, getAllWholesalers } from "../../services/admin/wholesaler"
-import DataTable from "../../components/DataTable"
+import { deleteWholesaler, getAllWholesalers } from "../../../services/admin/wholesaler"
+import DataTable from "../../../components/DataTable"
 import { toast } from "react-toastify"
 
 const WholesalerList = () => {

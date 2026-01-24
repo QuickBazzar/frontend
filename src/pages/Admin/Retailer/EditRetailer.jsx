@@ -1,6 +1,6 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom"
-import EditProfile from "../../components/EditProfile"
-import { getRetailerById, updateRetailer } from "../../services/admin/retailer"
+import EditProfile from "../../../components/EditProfile"
+import { getRetailerById, updateRetailer } from "../../../services/admin/retailer"
 import { useEffect, useState } from "react"
 
 const EditRetailer = () => {

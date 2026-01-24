@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { createUser } from '../../services/admin/users'
-import { ROLES } from '../../utils/roles'
+import { createUser } from '../../../services/admin/users'
+import { ROLES } from '../../../utils/roles'
 
 const CreateUser = () => {
     const navigate = useNavigate()

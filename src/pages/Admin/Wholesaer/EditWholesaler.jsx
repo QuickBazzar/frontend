@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
-import { getWholesalerById, updateWholesaler } from '../../services/admin/wholesaler'
-import EditProfile from '../../components/EditProfile'
+import { getWholesalerById, updateWholesaler } from '../../../services/admin/wholesaler'
+import EditProfile from '../../../components/EditProfile'
 
 export const EditWholesaler = () => {
     const {id} = useParams()

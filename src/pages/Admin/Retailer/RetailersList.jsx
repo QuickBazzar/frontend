@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import DataTable from '../../components/DataTable'
-import { deleteRetailer, getAllRetailers } from '../../services/admin/retailer'
+import DataTable from '../../../components/DataTable'
+import { deleteRetailer, getAllRetailers } from '../../../services/admin/retailer'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 

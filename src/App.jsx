@@ -8,15 +8,15 @@ import { ToastContainer } from 'react-toastify';
 import RetailerHome from './pages/Retailer/RetailerHome';
 import AdminHome from './pages/Admin/AdminHome';
 import WholesalerHome from './pages/WholeSaler/WholeSalerHome';
-import RetailersList from './pages/Admin/RetailersList';
+import RetailersList from './pages/Admin/Retailer/RetailersList';
 import Navbar from './components/NavBar';
-import EditRetailer from './pages/Admin/EditRetailer';
+import EditRetailer from './pages/Admin/Retailer/EditRetailer';
 import AdminDashboard from './pages/Admin/AdminDashboard';
-import UsersList from './pages/Admin/UsersList';
-import EditUser from './pages/Admin/EditUser';
-import WholesalerList from './pages/Admin/WholesalerList';
-import { EditWholesaler } from './pages/Admin/EditWholesaler';
-import CreateUser from './pages/Admin/CreateUser';
+import UsersList from './pages/Admin/User/UsersList';
+import EditUser from './pages/Admin/User/EditUser';
+import WholesalerList from './pages/Admin/Wholesaer/WholesalerList';
+import { EditWholesaler } from './pages/Admin/Wholesaer/EditWholesaler';
+import CreateUser from './pages/Admin/User/CreateUser';
 
 export const UserContext = createContext()
 function App() {

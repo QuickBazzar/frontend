@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useLocation, useParams } from "react-router-dom"
-import { getUserById, updateUser } from "../../services/admin/users"
-import EditProfile from './../../components/EditProfile';
+import { getUserById, updateUser } from "../../../services/admin/users"
+import EditProfile from '../../../components/EditProfile';
 
 const EditUser = () => {
     const {id} = useParams()
