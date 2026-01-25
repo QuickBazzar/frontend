@@ -26,6 +26,8 @@ import { PaymentReports } from './pages/Admin/Reports/PaymentReports';
 import PaymentsList from './pages/Admin/Payments/PaymentsList';
 import PaymentDetails from './pages/Admin/Payments/PaymentDetails';
 import GSTReports from './pages/Admin/Reports/GSTReports';
+import RetailerOrdersReport from './pages/Admin/Reports/RetailerOrdersReport';
+import WholesalerProductReport from './pages/Admin/Reports/WholesalerProductReport';
 
 export const UserContext = createContext()
 function App() {
@@ -85,6 +87,8 @@ function App() {
             <Route path="payments" element={<PaymentsList />} />
             <Route path="payments/order/:id" element={<PaymentDetails />} />
             <Route path="reports/gst" element={<GSTReports />} />
+            <Route path='reports/retailers' element={<RetailerOrdersReport />}/>
+            <Route path='reports/wholesalers' element={<WholesalerProductReport />} />
           </Route>
 
           <Route
