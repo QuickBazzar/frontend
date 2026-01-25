@@ -1,48 +1,58 @@
-function DataTable({columns, data, actions}) {
+function DataTable({ columns, data, actions }) {
   return (
-    <table className='table table-bordered table-hover'>
-      <thead className='table-dark'>
-        <tr>
-          {columns.map((col) => (
-            <th key={col.key}>{col.label}</th>
-          ))}
-          {actions && <th>Action</th>}
-        </tr>
-      </thead>
-
-      <tbody>
-        {data.length === 0 ? (
+    <div className="table-responsive">
+      <table className="table table-bordered table-hover align-middle">
+        <thead className="table-dark">
           <tr>
-            <td colSpan={columns.length + (actions ? 1 : 0)} 
-            className='text-center'>
-              No data available
-            </td>
+            {columns.map((col) => (
+              <th key={col.key} className="text-nowrap">
+                {col.label}
+              </th>
+            ))}
+            {actions && <th className="text-center text-nowrap">Action</th>}
           </tr>
-        ): (
-          data.map((row, index) => (
-            <tr key={index}>
-              {columns.map((col) => (
-                <td key={col.key}>
-                  {col.render ? col.render(row) : row[col.key]}</td>
-              ))}
-              {actions && (
-                <td>
-                  {actions.map((action, idx) => (
-                    <button
-                    key={idx}
-                    className={`btn btn-sm me-2 ${action.className}`}
-                    onClick={() => action.onClick(row)}
-                    >
-                      {action.label}
-                    </button>
-                  ))}
-                </td>
-              )}
+        </thead>
+
+        <tbody>
+          {data.length === 0 ? (
+            <tr>
+              <td
+                colSpan={columns.length + (actions ? 1 : 0)}
+                className="text-center"
+              >
+                No data available
+              </td>
             </tr>
-          ))
-        )}
-      </tbody>
-    </table>
+          ) : (
+            data.map((row, index) => (
+              <tr key={index}>
+                {columns.map((col) => (
+                  <td key={col.key}>
+                    {col.render ? col.render(row) : row[col.key]}
+                  </td>
+                ))}
+
+                {actions && (
+                  <td className="text-center">
+                    <div className="d-flex flex-column flex-sm-row gap-2 justify-content-center">
+                      {actions.map((action, idx) => (
+                        <button
+                          key={idx}
+                          className={`btn btn-sm ${action.className}`}
+                          onClick={() => action.onClick(row)}
+                        >
+                          {action.label}
+                        </button>
+                      ))}
+                    </div>
+                  </td>
+                )}
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </div>
   )
 }
 
