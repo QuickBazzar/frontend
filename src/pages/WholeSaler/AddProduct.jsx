@@ -5,10 +5,12 @@ import WholesalerNavbar from './WholesalerNavbar'
 import { addProduct } from '../../services/product'
 
 function AddProduct() {
-  const navigate = useNavigate()   // ✅ INSIDE component
+  const navigate = useNavigate()
 
   const [ProductName, setProductName] = useState('')
   const [Category, setCategory] = useState('')
+  const [Description, setDescription] = useState('')
+  const [Quantity, setQuantity] = useState('')
   const [Price, setPrice] = useState('')
   const [StockQuantity, setStockQuantity] = useState('')
   const [ProductImage, setProductImage] = useState(null)
@@ -16,7 +18,15 @@ function AddProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (!ProductName || !Category || !Price || !StockQuantity || !ProductImage) {
+    if (
+      !ProductName ||
+      !Category ||
+      !Description ||
+      !Quantity ||
+      !Price ||
+      !StockQuantity ||
+      !ProductImage
+    ) {
       toast.error('All fields are required')
       return
     }
@@ -24,6 +34,8 @@ function AddProduct() {
     const formData = new FormData()
     formData.append('ProductName', ProductName)
     formData.append('Category', Category)
+    formData.append('Description', Description)
+    formData.append('Quantity', Quantity)
     formData.append('Price', Price)
     formData.append('StockQuantity', StockQuantity)
     formData.append('ProductImage', ProductImage)
@@ -35,20 +47,21 @@ function AddProduct() {
       if (response.data.status === 'success') {
         toast.success('Product added successfully')
 
-        // ✅ RESET FORM
+        // reset form
         setProductName('')
         setCategory('')
+        setDescription('')
+        setQuantity('')
         setPrice('')
         setStockQuantity('')
         setProductImage(null)
 
-        // ✅ NAVIGATE TO VIEW PRODUCT PAGE
         navigate('/wholesaler/view-products')
       } else {
         toast.error(response.data.error || 'Failed to add product')
       }
     } catch (err) {
-      console.log('AXIOS ERROR:', err)
+      console.error(err)
       toast.error('Failed to add product')
     }
   }
@@ -73,6 +86,22 @@ function AddProduct() {
             placeholder="Category"
             value={Category}
             onChange={(e) => setCategory(e.target.value)}
+          />
+
+          <textarea
+            className="form-control mb-2"
+            placeholder="Description"
+            value={Description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows="3"
+          />
+
+          <input
+            type="number"
+            className="form-control mb-2"
+            placeholder="Quantity (e.g. pack size)"
+            value={Quantity}
+            onChange={(e) => setQuantity(e.target.value)}
           />
 
           <input
