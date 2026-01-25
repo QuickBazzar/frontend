@@ -4,7 +4,6 @@ import {
   PlusSquareFill,
   EyeFill,
   PersonFill,
-  CartFill,
   BagCheckFill,
   BoxArrowRight
 } from 'react-bootstrap-icons'
@@ -18,13 +17,15 @@ function WholesalerSidebar() {
     { name: 'Add Product', path: '/wholesaler/add-product', icon: <PlusSquareFill /> },
     { name: 'View Products', path: '/wholesaler/view-products', icon: <EyeFill /> },
     { name: 'Orders', path: '/wholesaler/orders', icon: <BagCheckFill /> },
-    { name: 'Profile', path: '/wholesaler/register', icon: <PersonFill /> },
+    { name: 'Profile', path: '/wholesaler/profile', icon: <PersonFill /> },
   ]
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('user')
-    navigate('/login')
-  }
+const handleLogout = () => {
+  sessionStorage.removeItem("user"); // clear session
+  localStorage.removeItem("token");  // clear token
+  navigate("/", { replace: true });   // redirect to login
+};
+
 
   return (
     <div

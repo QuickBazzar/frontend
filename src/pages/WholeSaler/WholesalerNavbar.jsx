@@ -9,12 +9,20 @@ function WholesalerNavbar() {
   }
 
   return (
-    <nav className="navbar navbar-dark bg-dark px-4">
-      <span className="navbar-brand fw-bold">Wholesaler Panel</span>
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3 px-md-4">
+      <span className="navbar-brand fw-bold">
+        Wholesaler Panel
+      </span>
 
-      <button className="btn btn-outline-light btn-sm" onClick={logout}>
-        Logout
-      </button>
+      {/* Right side */}
+      <div className="ms-auto">
+        <button
+          className="btn btn-outline-light btn-sm"
+          onClick={logout}
+        >
+          Logout
+        </button>
+      </div>
     </nav>
   )
 }
