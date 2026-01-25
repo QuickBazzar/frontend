@@ -92,27 +92,33 @@ const UsersList = () => {
     }
 
   return (
-    <div className='container mt-3'>
-        <h3>Users List</h3>
+    <div className='w-100'>
+        <h3 className='mb-3'>Users List</h3>
 
-        <input 
-            type="text"
-            className='form-control form-control-sm'
-            placeholder='Search by name, email and role'
-            value={search}
-            onChange={(e) => setSearch(e.target.value)} 
-        />
+        <div className='row g-2 mb-3'>
+            <div className='col-12 col-md-6 col-lg-4'>
+                <input 
+                    type="text"
+                    className='form-control form-control-sm'
+                    placeholder='Search by name or email'
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)} 
+                />
+            </div>
 
-        <select
-            className='form-select form-select-sm mt-3 mb-3'
-            value={roleFilter}
-            onChange={(e) => setRole(e.target.value)}
-        >
-            <option value="ALL">All Roles</option>
-            <option value="ADMIN">Admin</option>
-            <option value="RETAILER">Retailer</option>
-            <option value="WHOLESALER">Wholesaler</option>
-        </select>
+            <div className="col-12 col-md-4 col-lg-3">
+                <select
+                    className="form-select form-select-sm"
+                    value={roleFilter}
+                    onChange={(e) => setRole(e.target.value)}
+                >
+                    <option value="ALL">All Roles</option>
+                    <option value="ADMIN">Admin</option>
+                    <option value="RETAILER">Retailer</option>
+                    <option value="WHOLESALER">Wholesaler</option>
+                </select>
+            </div>
+        </div>
         <DataTable columns={columns} data={filteredUsers} actions={actions} />
     </div>
   )
