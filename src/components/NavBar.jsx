@@ -16,62 +16,41 @@ function Navbar() {
   }
 
   const getHomePath = () => {
-    if(user.role == ROLES.ADMIN) return "/admin"
-    if(user.role == ROLES.RETAILER) return "/retailer"
-    if(user.role == ROLES.WHOLESALER) return "/wholesaler"
+    if (user.role === ROLES.ADMIN) return "/admin"
+    if (user.role === ROLES.RETAILER) return "/retailer"
+    if (user.role === ROLES.WHOLESALER) return "/wholesaler"
     return "/"
   }
 
   return (
-    <nav className="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
-      <div className="container-fluid">
-        <Link className="navbar-brand" to={getHomePath()}>
-          QuickBazzr
+    <nav className="navbar navbar-dark bg-primary sticky-top">
+      <div className="container-fluid d-flex align-items-center">
+
+        {/* LEFT: Sidebar Toggle (Admin Mobile Only) */}
+        {user.role === ROLES.ADMIN && (
+          <button
+            className="btn btn-outline-light btn-sm d-md-none me-2"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#adminSidebar"
+            aria-label="Toggle sidebar"
+          >
+            ☰
+          </button>
+        )}
+
+        {/* BRAND */}
+        <Link className="navbar-brand mb-0 h1" to={getHomePath()}>
+          QuickBazzar
         </Link>
 
+        {/* RIGHT: Logout */}
         <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
+          className="btn btn-outline-light btn-sm ms-auto"
+          onClick={logout}
         >
-          <span className="navbar-toggler-icon"></span>
+          Logout
         </button>
 
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <div className="navbar-nav">
-
-            {user.role === "RETAILER" && (
-              <>
-                {/* <Link className="nav-link" to="/retailer">Dashboard</Link> */}
-                {/* <Link className="nav-link" to="/retailer/orders">Orders</Link>
-                <Link className="nav-link" to="/retailer/profile">Profile</Link> */}
-              </>
-            )}
-
-
-            {user.role === "ADMIN" && (
-              <>
-                {/* <Link className="nav-link" to="/admin/getAllRetailers">Retailers</Link> */}
-                {/* <Link className="nav-link" to="/admin/users">Users</Link>
-                <Link className="nav-link" to="/admin/reports">Reports</Link> */}
-              </>
-            )}
-
-            {user.role === "WHOLESALER" && (
-              <>
-                {/* <Link className="nav-link" to="/wholesaler">Dashboard</Link>
-                <Link className="nav-link" to="/wholesaler/stock">Stock</Link>
-                <Link className="nav-link" to="/wholesaler/orders">Orders</Link> */}
-              </>
-            )}
-            
-            <button
-              className="nav-link btn btn-link text-white"
-              onClick={logout}>Logout</button>
-
-          </div>
-        </div>
       </div>
     </nav>
   )
