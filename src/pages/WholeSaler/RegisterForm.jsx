@@ -1,63 +1,111 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { registerWholesaler, checkWholesalerStatus } from '../../services/wholesaler'
-import { toast } from 'react-toastify'
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import {
+  registerWholesaler,
+  getMyWholesalerProfile
+} from "../../services/wholesaler"
+import { toast } from "react-toastify"
 
-function RegisterForm() {
+const RegisterWholesaler = () => {
   const navigate = useNavigate()
 
-  const [shopName, setShopName] = useState('')
-  const [contactNumber, setContactNumber] = useState('')
-  const [address, setAddress] = useState('')
-  const [gstNumber, setGstNumber] = useState('')
+  const [form, setForm] = useState({
+    shopName: "",
+    contactNumber: "",
+    address: "",
+    gstNumber: ""
+  })
 
-  // 🔐 Prevent re-registration
+  const [loading, setLoading] = useState(true)
+
+  // 🔹 Check already registered or not
   useEffect(() => {
-    const checkStatus = async () => {
-      const res = await checkWholesalerStatus()
-      if (res.data.data.isRegistered) {
-        navigate('/wholesaler/dashboard')
+    const checkProfile = async () => {
+      const res = await getMyWholesalerProfile()
+
+      if (
+        res.status === "success" &&
+        Array.isArray(res.data) &&
+        res.data.length > 0
+      ) {
+        navigate("/wholesaler/dashboard")
       }
+
+      setLoading(false)
     }
-    checkStatus()
+
+    checkProfile()
   }, [navigate])
 
-  const handleRegister = async (e) => {
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  const submit = async (e) => {
     e.preventDefault()
 
-    if (!shopName || !contactNumber || !address || !gstNumber) {
-      toast.error('All fields are required')
+    if (
+      !form.shopName ||
+      !form.contactNumber ||
+      !form.address ||
+      !form.gstNumber
+    ) {
+      toast.error("All fields are required")
       return
     }
 
-    const result = await registerWholesaler({
-      shopName,
-      contactNumber,
-      address,
-      gstNumber
-    })
+    const result = await registerWholesaler(form)
 
-    if (result.status === 'success') {
-      toast.success('Registration successful')
-      navigate('/wholesaler/dashboard')
+    if (result.status === "success") {
+      toast.success("Registration successful")
+      navigate("/wholesaler/dashboard")
     } else {
-      toast.error(result.error)
+     toast.error(result.error || "Registration failed")
+
     }
   }
+
+  if (loading) return <p className="text-center mt-5">Loading...</p>
 
   return (
     <div className="container w-50 mt-4">
       <h3>Wholesaler Registration</h3>
 
-      <form onSubmit={handleRegister}>
-        <input className="form-control mb-2" placeholder="Shop Name" onChange={e => setShopName(e.target.value)} />
-        <input className="form-control mb-2" placeholder="Contact Number" onChange={e => setContactNumber(e.target.value)} />
-        <textarea className="form-control mb-2" placeholder="Address" onChange={e => setAddress(e.target.value)} />
-        <input className="form-control mb-2" placeholder="GST Number" onChange={e => setGstNumber(e.target.value)} />
-        <button className="btn btn-success">Register</button>
+      <form onSubmit={submit}>
+        <input
+          className="form-control mb-2"
+          name="shopName"
+          placeholder="Shop Name"
+          onChange={handleChange}
+        />
+
+        <input
+          className="form-control mb-2"
+          name="contactNumber"
+          placeholder="Contact Number"
+          onChange={handleChange}
+        />
+
+        <textarea
+          className="form-control mb-2"
+          name="address"
+          placeholder="Address"
+          onChange={handleChange}
+        />
+
+        <input
+          className="form-control mb-2"
+          name="gstNumber"
+          placeholder="GST Number"
+          onChange={handleChange}
+        />
+
+        <button type="submit" className="btn btn-success w-100">
+          Register
+        </button>
       </form>
     </div>
   )
 }
 
-export default RegisterForm
+export default RegisterWholesaler
