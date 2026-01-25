@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom"
 
 const AdminSidebar = () => {
     return (
-        <div className="bg-dark text-white vh-auto p-3" style={{width: "200px"}}>
+        <div className="bg-dark text-white vh-auto p-3" style={{width: "240px"}}>
             <h5 className="mb-4">Admin Panel</h5>
 
             <ul className="nav flex-column">
@@ -51,6 +51,30 @@ const AdminSidebar = () => {
                 <li className="nav-item">
                     <NavLink to="/admin/orders" className="nav-link text-white" >
                         Orders
+                    </NavLink>
+                </li>
+
+                <li className="nav-item">
+                    <NavLink to="/admin/payments" className="nav-link text-white">
+                         Payments
+                    </NavLink>
+                </li>
+
+                <li className="nav-item">
+                    <NavLink to="/admin/reports/gst" className="nav-link text-white">
+                         GST Reports
+                    </NavLink>
+                </li>
+
+                <li className="nav-item">
+                    <NavLink to="/admin/reports/delivery" className="nav-link text-white">
+                        Delivery Reports
+                    </NavLink>
+                </li>
+
+                <li className="nav-item">
+                    <NavLink to="/admin/reports/payments" className="nav-link text-white">
+                        Payment Reports
                     </NavLink>
                 </li>
 

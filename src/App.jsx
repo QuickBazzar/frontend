@@ -21,6 +21,11 @@ import ProductsList from './pages/Admin/Products/ProductsList';
 import LowStockProducts from './pages/Admin/Products/LowStockProducts';
 import OrdersList from './pages/Admin/Orders/OrdersList';
 import { OrderDetails } from './pages/Admin/Orders/OrderDetails';
+import { DeliveryReports } from './pages/Admin/Reports/DeliveryReports';
+import { PaymentReports } from './pages/Admin/Reports/PaymentReports';
+import PaymentsList from './pages/Admin/Payments/PaymentsList';
+import PaymentDetails from './pages/Admin/Payments/PaymentDetails';
+import GSTReports from './pages/Admin/Reports/GSTReports';
 
 export const UserContext = createContext()
 function App() {
@@ -75,6 +80,11 @@ function App() {
             <Route path='products/low-stock' element={<LowStockProducts />}/>
             <Route path='orders' element={<OrdersList />}/>
             <Route path='orders/:id' element={<OrderDetails />}/>
+            <Route path='reports/delivery' element={<DeliveryReports />}/>
+            <Route path='reports/payments' element={<PaymentReports />}/>
+            <Route path="payments" element={<PaymentsList />} />
+            <Route path="payments/order/:id" element={<PaymentDetails />} />
+            <Route path="reports/gst" element={<GSTReports />} />
           </Route>
 
           <Route
