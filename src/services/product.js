@@ -43,3 +43,11 @@ export const deleteProduct = (id) => {
 }
 
 
+export const searchProductByName = (name) => {
+  return axios.get(`${BASE_URL}/search/${name}`)
+}
+
+// 🔹 Search product by category
+export const searchProductByCategory = (category) => {
+  return axios.get(`${BASE_URL}/category/${category}`)
+}
