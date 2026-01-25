@@ -22,22 +22,13 @@ const OrdersList = () => {
         setLoading(false)
     }
 
-    const handleStatusChange = async (order, status) => {
-        const result = await updateDeliveryStatus(order.orderID, status)
-        if(result?.status == "success"){
-            toast.success("Delivery status updated")
-            loadOrders()
-        }
-        else{
-            toast.error("Update Failed")
-        }
-    }
-
     const handleDelete = async (order) => {
-        if(!window.confirm(`Do you want delete order ${order.orderID}?`)) return
+        if(!window.confirm(`Do you want delete order ${order.OrderID}?`)) return
 
-        const result = await deleteOrder(order.orderID)
+        const result = await deleteOrder(order.OrderID)
         if(result?.status == "success"){
+            console.log(result.data);
+            
             toast.success("Order deleted")
             loadOrders()
         }
