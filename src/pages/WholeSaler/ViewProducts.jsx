@@ -6,8 +6,8 @@ import {
   getAllProducts,
   deleteProduct,
 } from '../../services/product'
-const LOW_STOCK_THRESHOLD = 10
 
+const LOW_STOCK_THRESHOLD = 10
 
 function ViewProducts() {
   const [products, setProducts] = useState([])
@@ -93,7 +93,6 @@ function ViewProducts() {
                 <th>Category</th>
                 <th>Price</th>
                 <th className="text-center">Stock</th>
-                <th className="text-center">Quantity</th>
                 <th className="text-center">Actions</th>
               </tr>
             </thead>
@@ -101,7 +100,9 @@ function ViewProducts() {
             <tbody>
               {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="text-center">No products found</td>
+                  <td colSpan="7" className="text-center">
+                    No products found
+                  </td>
                 </tr>
               ) : (
                 filteredProducts.map(p => (
@@ -118,36 +119,38 @@ function ViewProducts() {
                     <td className="fw-semibold">{p.ProductName}</td>
 
                     <td style={{ maxWidth: '250px' }}>
-                      <span className="text-muted">{p.Description || '—'}</span>
+                      <span className="text-muted">
+                        {p.Description || '—'}
+                      </span>
                     </td>
 
                     <td>{p.Category}</td>
 
-                    <td className="fw-bold text-success">₹ {p.Price}</td>
+                    <td className="fw-bold text-success">
+                      ₹ {p.Price}
+                    </td>
 
-                    {/* STOCK */}
+                    {/* STOCK WITH WARNING */}
                     <td className="text-center fw-bold">
-  {p.StockQuantity === 0 && (
-    <span className="badge bg-danger">Out of Stock</span>
-  )}
+                      {p.StockQuantity === 0 && (
+                        <span className="badge bg-danger">
+                          Out of Stock
+                        </span>
+                      )}
 
-  {p.StockQuantity > 0 && p.StockQuantity <= LOW_STOCK_THRESHOLD && (
-    <span className="badge bg-warning text-dark">
-      Low Stock ({p.StockQuantity})
-    </span>
-  )}
+                      {p.StockQuantity > 0 &&
+                        p.StockQuantity <= LOW_STOCK_THRESHOLD && (
+                          <span className="badge bg-warning text-dark">
+                            Low Stock ({p.StockQuantity})
+                          </span>
+                        )}
 
-  {p.StockQuantity > LOW_STOCK_THRESHOLD && (
-    <span className="badge bg-success">
-      {p.StockQuantity}
-    </span>
-  )}
-</td>
-
-
-                    {/* QUANTITY (same backend value, different business meaning) */}
-                    <td className="text-center">{p.Quantity}</td>
-
+                      {p.StockQuantity > LOW_STOCK_THRESHOLD && (
+                        <span className="badge bg-success">
+                          {p.StockQuantity}
+                        </span>
+                      )}
+                    </td>
 
                     <td className="text-center text-nowrap">
                       <button

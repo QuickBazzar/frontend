@@ -10,7 +10,6 @@ function AddProduct() {
   const [ProductName, setProductName] = useState('')
   const [Category, setCategory] = useState('')
   const [Description, setDescription] = useState('')
-  const [Quantity, setQuantity] = useState('')
   const [Price, setPrice] = useState('')
   const [StockQuantity, setStockQuantity] = useState('')
   const [ProductImage, setProductImage] = useState(null)
@@ -22,7 +21,6 @@ function AddProduct() {
       !ProductName ||
       !Category ||
       !Description ||
-      !Quantity ||
       !Price ||
       !StockQuantity ||
       !ProductImage
@@ -35,7 +33,6 @@ function AddProduct() {
     formData.append('ProductName', ProductName)
     formData.append('Category', Category)
     formData.append('Description', Description)
-    formData.append('Quantity', Quantity)
     formData.append('Price', Price)
     formData.append('StockQuantity', StockQuantity)
     formData.append('ProductImage', ProductImage)
@@ -51,7 +48,6 @@ function AddProduct() {
         setProductName('')
         setCategory('')
         setDescription('')
-        setQuantity('')
         setPrice('')
         setStockQuantity('')
         setProductImage(null)
@@ -94,14 +90,6 @@ function AddProduct() {
             value={Description}
             onChange={(e) => setDescription(e.target.value)}
             rows="3"
-          />
-
-          <input
-            type="number"
-            className="form-control mb-2"
-            placeholder="Quantity (e.g. pack size)"
-            value={Quantity}
-            onChange={(e) => setQuantity(e.target.value)}
           />
 
           <input
