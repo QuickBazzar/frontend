@@ -6,22 +6,32 @@ import Signin from './pages/signin';
 import Signup from './pages/signup';
 import { ToastContainer } from 'react-toastify';
 
-// import RetailerHome from './pages/Retailer/RetailerHome';
-import RetailerLayout from './pages/Retailer/RetailerLayout';
+
+import RetailerLayout from './layouts/retailer_layouts/RetailerLayout'
 import AdminHome from './pages/Admin/AdminHome';
 import WholesalerHome from './pages/WholeSaler/WholeSalerHome';
 
+import Cart from "./pages/Retailer/pages/Cart";
+import Orders from "./pages/Retailer/pages/Orders";
 import Profile from "./pages/Retailer/pages/Profile";
 import CreateProfile from "./pages/Retailer/pages/CreateProfile";
 import Dashboard from "./pages/Retailer/pages/Dashboard";
-import Cart from "./pages/Retailer/pages/Cart";
-import Orders from "./pages/Retailer/pages/Orders";
 import Payment from "./pages/Retailer/pages/Payment";
+
+
+
+// import Dashboard from './pages/Retailer/pages/Dashboard'
+// import Cart from "./pages/Retailer/Cart";
+// import Orders from "./pages/Retailer/Orders";
+// import Profile from "./pages/Retailer/Profile";
+// import CreateProfile from "./pages/Retailer/CreateProfile";
+// import Payment from './pages/Retailer/Payment';
 
 import RetailerProfileGuard from "./components/retailercomponents/RetailerProfileGuard";
 import ProductsPage from "./pages/Retailer/products/ProductsPage";
 import ProductsByWholesaler from "./pages/Retailer/products/ProductsByWholesaler";
-
+// import ProductsByWholesaler from './pages/Retailer/ProductsByWholesaler';
+// import ProductsPage from './pages/Retailer/products/ProductsPage';
 
 
 
@@ -37,15 +47,17 @@ function App() {
           <Route path='/register' element={<Signup />} />
           <Route path='/unauthorized' element={<Unauthorized />} />
 
-          <Route path="/retailer/create-profile"
-              element={
-                <RoleRoute allowedRoles={["RETAILER"]}>
-                  <CreateProfile />
-                </RoleRoute>
-              }
-            />
-
           {/* Retailer Routes */}
+
+          <Route path="/retailer/create-profile"
+            element={
+              <RoleRoute allowedRoles={["RETAILER"]}>
+                <CreateProfile />
+              </RoleRoute>
+            }
+          />
+
+
           <Route path='/retailer'
             element={
               <RoleRoute allowedRoles={['RETAILER']}>
@@ -53,17 +65,21 @@ function App() {
                   <RetailerLayout />
                 </RetailerProfileGuard>
               </RoleRoute>
-            }
-          >
+            }>
 
             {/* <Route path='profile' /> */}
+
             <Route index element={<Dashboard />} />
-            <Route path="profile" element={<Profile />} />
+
+            <Route path='dashboard' element={<Dashboard />} />
+            {/* <Route path="products" element={<ProductList />} /> */}
             <Route path="products" element={<ProductsPage />} />
             <Route path="products/:wholesalerId" element={<ProductsByWholesaler />} />
             <Route path="cart" element={<Cart />} />
             <Route path="orders" element={<Orders />} />
             <Route path="payment" element={<Payment />} />
+            <Route path="profile" element={<Profile />} />
+
             <Route
               path="/retailer/edit-profile"
               element={
@@ -72,6 +88,7 @@ function App() {
                 </RoleRoute>
               }
             />
+
 
           </Route>
 

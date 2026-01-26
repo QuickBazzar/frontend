@@ -1,6 +1,6 @@
 import { useState } from "react";
 import AllProducts from "./AllProducts";
-import WholesalerList from "../../WholeSaler/WholesalerList";
+import WholesalerList from "@/pages/Wholesaler/WholesalerList";
 
 function ProductsPage() {
   const [view, setView] = useState("ALL");

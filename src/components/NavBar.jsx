@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
 import { UserContext } from '../App'
+import { ROLES } from '../utils/roles'
 
 function Navbar() {
   const navigate = useNavigate()
@@ -14,70 +15,42 @@ function Navbar() {
     navigate('/')
   }
 
+  const getHomePath = () => {
+    if (user.role === ROLES.ADMIN) return "/admin"
+    if (user.role === ROLES.RETAILER) return "/retailer"
+    if (user.role === ROLES.WHOLESALER) return "/wholesaler"
+    return "/"
+  }
+
   return (
-    <nav className="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
-      <div className="container-fluid">
-        <Link className="navbar-brand" to="/">
-          QuickBazzr
+    <nav className="navbar navbar-dark bg-primary sticky-top">
+      <div className="container-fluid d-flex align-items-center">
+
+        {/* LEFT: Sidebar toggle for Admin and Retailer */}
+        {user.role === ROLES.ADMIN || user.role === ROLES.RETAILER && (
+          <button
+            className="btn btn-outline-light btn-sm d-md-none me-2"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#Sidebar"
+            aria-label="Toggle sidebar"
+          >
+            ☰
+          </button>
+        )}
+
+       
+        <Link className="navbar-brand mb-0 h1" to={getHomePath()}>
+          QuickBazzar
         </Link>
 
-        {/* Sidebar Toggle Button (Mobile only) */}
+        {/* RIGHT: Logout */}
         <button
-          className="btn btn-outline-light me-2 d-lg-none"
-          type="button"
-          data-bs-toggle="offcanvas"
-          data-bs-target="#retailerSidebar"
+          className="btn btn-outline-light btn-sm ms-auto"
+          onClick={logout}
         >
-          ☰
+          Logout
         </button>
 
-        {/* Navbar Collapse Button */}
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <div className="navbar-nav">
-
-            {user.role === "RETAILER" && (
-              <>
-                {/* <Link className="nav-link" to="/retailer">Dashboard</Link>
-                <Link className="nav-link" to="/retailer/orders">Orders</Link>
-                <Link className="nav-link" to="/retailer/profile">Profile</Link> */}
-              </>
-            )}
-
-
-            {user.role === "ADMIN" && (
-              <>
-                {/* <Link className="nav-link" to="/admin">Dashboard</Link>
-                <Link className="nav-link" to="/admin/users">Users</Link>
-                <Link className="nav-link" to="/admin/reports">Reports</Link> */}
-              </>
-            )}
-
-            {user.role === "WHOLESALER" && (
-              <>
-                {/* <Link className="nav-link" to="/wholesaler">Dashboard</Link>
-                <Link className="nav-link" to="/wholesaler/stock">Stock</Link>
-                <Link className="nav-link" to="/wholesaler/orders">Orders</Link> */}
-              </>
-            )}
-
-            <button
-              className="nav-link btn btn-link text-white"
-              onClick={logout}
-            >
-              Logout
-            </button>
-
-          </div>
-        </div>
       </div>
     </nav>
   )
