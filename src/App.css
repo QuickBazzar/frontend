@@ -50,3 +50,18 @@
 .read-the-docs {
   color: #888;
 }
+
+.nav-link.active {
+  background-color: #0d6efd !important;
+  border-radius: 8px;
+}
+
+
+.dashboard-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}

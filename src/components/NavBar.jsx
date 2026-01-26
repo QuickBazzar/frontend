@@ -26,19 +26,19 @@ function Navbar() {
     <nav className="navbar navbar-dark bg-primary sticky-top">
       <div className="container-fluid d-flex align-items-center">
 
-        {/* LEFT: Sidebar Toggle (Admin Mobile Only) */}
-        {user.role === ROLES.ADMIN && (
+        {/* LEFT: Sidebar toggle for Admin and Retailer */}
+        {user.role === ROLES.ADMIN || user.role === ROLES.RETAILER && (
           <button
             className="btn btn-outline-light btn-sm d-md-none me-2"
             data-bs-toggle="offcanvas"
-            data-bs-target="#adminSidebar"
+            data-bs-target="#Sidebar"
             aria-label="Toggle sidebar"
           >
             ☰
           </button>
         )}
 
-        {/* BRAND */}
+       
         <Link className="navbar-brand mb-0 h1" to={getHomePath()}>
           QuickBazzar
         </Link>

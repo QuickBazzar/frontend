@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useContext } from 'react'
 import { UserContext } from '../App'
 import { useNavigate, Link } from 'react-router-dom'
-import { loginUser } from '../services/auth'
+import { loginUser } from "@/services/retailer/user";
 import { toast } from 'react-toastify'
 
 
@@ -45,11 +45,11 @@ function Signin() {
   return (
     <div className='container w-50'>
         <div className="mb-3 mt-3">
-            <label for="inputEmail" className="form-label">Email address</label>
+            <label htmlFor="inputEmail" className="form-label">Email address</label>
             <input type="email" className="form-control" id="inputEmail" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div className='mb-3'>
-            <label for="inputPassword" className="form-label">Password</label>
+            <label htmlFor="inputPassword" className="form-label">Password</label>
             <input type="password" id="inputPassword" className="form-control" placeholder='password' onChange={e => setPasword(e.target.value)} />
         </div>
         <div className='mb-3'>
