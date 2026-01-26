@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { registerUserWithRole } from '../services/user'
+import { registerUserWithRole } from "@/services/retailer/user";
 import { toast } from 'react-toastify'
 
 

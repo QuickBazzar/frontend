@@ -1,3 +1,4 @@
+
 function DataTable({ columns, data, actions }) {
   return (
     <div className="table-responsive">
@@ -57,3 +58,6 @@ function DataTable({ columns, data, actions }) {
 }
 
 export default DataTable
+
+
+
