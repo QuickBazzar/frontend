@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import WholesalerNavbar from './WholesalerNavbar'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import WholesalerNavbar from './WholesalerNavbar'
+import DataTable from '../../components/DataTable'
 import {
   getAllProducts,
   deleteProduct,
@@ -23,9 +24,9 @@ function ViewProducts() {
 
   const fetchProducts = async () => {
     try {
-      const response = await getAllProducts()
-      if (response.data.status === 'success') {
-        const data = response.data.data
+      const res = await getAllProducts()
+      if (res?.data?.status === 'success') {
+        const data = res.data.data
         setProducts(data)
         setFilteredProducts(data)
 
@@ -34,7 +35,8 @@ function ViewProducts() {
       } else {
         toast.error('Failed to load products')
       }
-    } catch {
+    } catch (err) {
+      console.error(err)
       toast.error('Server error')
     }
   }
@@ -42,25 +44,116 @@ function ViewProducts() {
   const handleCategoryChange = (category) => {
     setSelectedCategory(category)
     setFilteredProducts(
-      category ? products.filter(p => p.Category === category) : products
+      category
+        ? products.filter(p => p.Category === category)
+        : products
     )
   }
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (productId) => {
     if (!window.confirm('Are you sure you want to delete this product?')) return
 
     try {
-      const res = await deleteProduct(id)
-      if (res.data.status === 'success') {
+      const res = await deleteProduct(productId)
+      if (res?.data?.status === 'success') {
         toast.success('Product deleted')
         fetchProducts()
       } else {
-        toast.error(res.data.error || 'Delete failed')
+        toast.error(res?.data?.error || 'Delete failed')
       }
-    } catch {
+    } catch (err) {
+      console.error(err)
       toast.error('Server error')
     }
   }
+
+  // 🔹 Stock badge logic
+  const stockBadge = (qty) => {
+    if (qty === 0)
+      return <span className="badge bg-danger">Out of Stock</span>
+
+    if (qty <= LOW_STOCK_THRESHOLD)
+      return (
+        <span className="badge bg-warning text-dark">
+          Low Stock ({qty})
+        </span>
+      )
+
+    return <span className="badge bg-success">{qty}</span>
+  }
+
+  // 🔹 DataTable columns
+  const columns = [
+    {
+      key: 'ProductImage',
+      label: 'Image',
+      render: (row) => (
+        <img
+          src={`http://localhost:4000/productimages/${row.ProductImage}`}
+          alt={row.ProductName}
+          style={{ height: '80px', objectFit: 'contain' }}
+          className="img-fluid"
+        />
+      ),
+    },
+    {
+      key: 'ProductName',
+      label: 'Name',
+      render: (row) => (
+        <span className="fw-semibold">{row.ProductName}</span>
+      ),
+    },
+    {
+      key: 'Description',
+      label: 'Description',
+      render: (row) => (
+        <span className="text-muted">
+          {row.Description || '—'}
+        </span>
+      ),
+    },
+    {
+      key: 'Category',
+      label: 'Category',
+    },
+    {
+      key: 'Price',
+      label: 'Price',
+      render: (row) => (
+        <span className="fw-bold text-success">
+          ₹ {row.Price}
+        </span>
+      ),
+    },
+    {
+      key: 'StockQuantity',
+      label: 'Stock',
+      render: (row) => stockBadge(row.StockQuantity),
+    },
+    {
+      key: 'Actions',
+      label: 'Actions',
+      render: (row) => (
+        <>
+          <button
+            className="btn btn-outline-primary btn-sm me-2"
+            onClick={() =>
+              navigate(`/wholesaler/update-product/${row.ProductID}`)
+            }
+          >
+            Edit
+          </button>
+
+          <button
+            className="btn btn-outline-danger btn-sm"
+            onClick={() => handleDelete(row.ProductID)}
+          >
+            Delete
+          </button>
+        </>
+      ),
+    },
+  ]
 
   return (
     <>
@@ -78,103 +171,17 @@ function ViewProducts() {
           >
             <option value="">All Categories</option>
             {categories.map((cat, index) => (
-              <option key={index} value={cat}>{cat}</option>
+              <option key={index} value={cat}>
+                {cat}
+              </option>
             ))}
           </select>
         </div>
 
-        <div className="table-responsive">
-          <table className="table table-bordered table-hover align-middle">
-            <thead className="table-dark">
-              <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th className="text-center">Stock</th>
-                <th className="text-center">Actions</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {filteredProducts.length === 0 ? (
-                <tr>
-                  <td colSpan="7" className="text-center">
-                    No products found
-                  </td>
-                </tr>
-              ) : (
-                filteredProducts.map(p => (
-                  <tr key={p.ProductID}>
-                    <td style={{ width: '120px' }}>
-                      <img
-                        src={`http://localhost:4000/productimages/${p.ProductImage}`}
-                        alt={p.ProductName}
-                        className="img-fluid"
-                        style={{ height: '80px', objectFit: 'contain' }}
-                      />
-                    </td>
-
-                    <td className="fw-semibold">{p.ProductName}</td>
-
-                    <td style={{ maxWidth: '250px' }}>
-                      <span className="text-muted">
-                        {p.Description || '—'}
-                      </span>
-                    </td>
-
-                    <td>{p.Category}</td>
-
-                    <td className="fw-bold text-success">
-                      ₹ {p.Price}
-                    </td>
-
-                    {/* STOCK WITH WARNING */}
-                    <td className="text-center fw-bold">
-                      {p.StockQuantity === 0 && (
-                        <span className="badge bg-danger">
-                          Out of Stock
-                        </span>
-                      )}
-
-                      {p.StockQuantity > 0 &&
-                        p.StockQuantity <= LOW_STOCK_THRESHOLD && (
-                          <span className="badge bg-warning text-dark">
-                            Low Stock ({p.StockQuantity})
-                          </span>
-                        )}
-
-                      {p.StockQuantity > LOW_STOCK_THRESHOLD && (
-                        <span className="badge bg-success">
-                          {p.StockQuantity}
-                        </span>
-                      )}
-                    </td>
-
-                    <td className="text-center text-nowrap">
-                      <button
-                        className="btn btn-outline-primary btn-sm me-2"
-                        onClick={() =>
-                          navigate(`/wholesaler/update-product/${p.ProductID}`)
-                        }
-                      >
-                        Edit
-                      </button>
-
-                      <button
-                        className="btn btn-outline-danger btn-sm"
-                        onClick={() => handleDelete(p.ProductID)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        <DataTable
+          columns={columns}
+          data={filteredProducts}
+        />
       </div>
     </>
   )
