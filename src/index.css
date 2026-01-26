@@ -1,3 +1,6 @@
+/* Base Reset */
+* {
+  box-sizing: border-box;
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -26,36 +29,28 @@ a:hover {
   color: #535bf2;
 }
 
+/* Body */
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+  background-color: #f8f9fa; /* Bootstrap light bg */
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Links */
+a {
+  text-decoration: none;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+/* Dashboard Hover Effect */
+.dashboard-card {
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.25s ease-in-out;
 }
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+.dashboard-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 25px rgba(161, 160, 160, 0.15);
 }
 
 @media (prefers-color-scheme: light) {

@@ -56,7 +56,6 @@ function DataTable({ columns, data, actions }) {
     </div>
   )
 }
-
 export default DataTable
 
 
