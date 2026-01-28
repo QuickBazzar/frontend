@@ -33,35 +33,10 @@
   }
 }
 
-.dashboard-card {
-  cursor: pointer;
-  transition: all 0.25s ease-in-out;
-}
-
-.dashboard-card:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-}
-
 .card {
   padding: 2em;
 }
 
 .read-the-docs {
   color: #888;
-}
-
-.nav-link.active {
-  background-color: #0d6efd !important;
-  border-radius: 8px;
-}
-
-
-.dashboard-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.dashboard-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
 }
