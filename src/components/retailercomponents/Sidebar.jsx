@@ -1,68 +1,66 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom"
 
-const Sidebar = () => {
+const RetailerSidebar = () => {
   return (
     <>
-      {/* MOBILE SIDEBAR */}
+      <div
+        className="bg-dark text-white px-3 py-3 d-none d-lg-block"
+        style={{ width: "250px", minHeight: "100vh" }}
+        id="Sidebar"
+      >
+        <h5 className="mb-4">Retailer Panel</h5>
+        <SidebarLinks />
+      </div>
+
       <div
         className="offcanvas offcanvas-start bg-dark text-white"
         tabIndex="-1"
-        id="Sidebar"
+        id="retailerSidebar"
+        style={{ width: "250px" }}
       >
         <div className="offcanvas-header">
-          <h5 className="offcanvas-title">Retailer Panel</h5>
+          <h5>Retailer Panel</h5>
           <button
             type="button"
             className="btn-close btn-close-white"
             data-bs-dismiss="offcanvas"
-          ></button>
+          />
         </div>
-
         <div className="offcanvas-body">
           <SidebarLinks />
         </div>
       </div>
-
-
-      {/* DESKTOP SIDEBAR */}
-      <div className="d-none d-md-block bg-dark text-white vh-100 p-3">
-        <SidebarLinks />
-      </div>
     </>
-  );
-};
+  )
+}
 
 const SidebarLinks = () => (
-  <ul className="nav nav-pills flex-column gap-2">
-    <li className="nav-item">
-      <Link className="nav-link text-white" to="/retailer/dashboard">
-        Dashboard
-      </Link>
-    </li>
-    <li className="nav-item">
-      <Link className="nav-link text-white" to="/retailer/products">
-        Products
-      </Link>
-    </li>
-    <li className="nav-item">
-      <Link className="nav-link text-white" to="/retailer/cart">
-        Cart
-      </Link>
-    </li>
-    <li className="nav-item">
-      <Link className="nav-link text-white" to="/retailer/orders">
-        Orders
-      </Link>
-    </li>
-    <li className="nav-item">
-      <Link className="nav-link text-white" to="/retailer/profile">
-        Profile
-      </Link>
-    </li>
+  <ul className="nav flex-column gap-1">
+
+    <NavItem to="/retailer" label="Dashboard" end />
+
+    <NavItem to="/retailer/products" label="Products" />
+    <NavItem to="/retailer/cart" label="Cart" />
+    <NavItem to="/retailer/orders" label="Orders" />
+    <NavItem to="/retailer/profile" label="Profile" />
+
   </ul>
-);
+)
 
-export default Sidebar;
+const NavItem = ({ to, label, end }) => (
+  <li className="nav-item">
+    <NavLink
+      to={to}
+      end={end}
+      className={({ isActive }) =>
+        `nav-link px-2 py-1 rounded ${
+          isActive ? "bg-secondary text-white" : "text-white"
+        }`
+      }
+    >
+      {label}
+    </NavLink>
+  </li>
+)
 
-
-
+export default RetailerSidebar
