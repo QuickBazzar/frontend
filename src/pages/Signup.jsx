@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { registerUserWithRole } from '../services/user'
+import { registerUserWithRole } from '../services/auth'
 import { toast } from 'react-toastify'
 
 
@@ -70,7 +70,6 @@ function SignUp() {
         >
           <option value="RETAILER">RETAILER</option>
           <option value="WHOLESALER">WHOLESALER</option>
-          <option value="ADMIN">ADMIN</option>
         </select>
       </div>
 
