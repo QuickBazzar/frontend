@@ -1,3 +1,4 @@
+
 export function formatDateTime(dateString) {
     const date = new Date(dateString)
     
@@ -15,4 +16,3 @@ export function formatCurrency(amount) {
     if(amount == null) return "-"
     return `₹${Number(amount).toFixed(2)}`
 }
-
