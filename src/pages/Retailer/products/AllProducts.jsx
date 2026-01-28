@@ -59,16 +59,6 @@ function AllProducts() {
 
   return (
     <div className="container-fluid px-4">
-
-      {/* Header */}
-      {/*
-      <div className="mb-4">
-        <h4 className="fw-bold">All Products</h4>
-        <p className="text-muted">
-          Browse products from all wholesalers
-        </p>
-      </div> */}
-
       {/* Search, Filter, Sort */}
       <div className="d-flex flex-wrap gap-3 mb-4">
 

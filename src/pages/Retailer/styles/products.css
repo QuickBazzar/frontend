@@ -1,17 +1,24 @@
-/* Grid for Products */
+/* =========================
+   PRODUCT GRID
+========================= */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
   gap: 24px;
 }
 
-/* Card for Products */
+/* =========================
+   PRODUCT CARD
+========================= */
 .product-card {
   background: #ffffff;
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .product-card:hover {
@@ -19,97 +26,64 @@
   box-shadow: 0 14px 35px rgba(0, 0, 0, 0.15);
 }
 
-/* Image */
+.product-card:hover .product-img img {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+/* PRODUCT IMAGE CONTAINER */
+/* PRODUCT IMAGE CONTAINER */
 .product-img {
-  height: 180px;
-  background: #f4f6f8;
+  height: 200px;
+  background: transparent;      /* REMOVE background */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+/* PRODUCT IMAGE */
 .product-img img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; 
+  padding: 16px;               
 }
 
-/* Info Section */
+/* =========================
+   PRODUCT INFO
+========================= */
 .product-info {
   padding: 14px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .product-title {
   font-size: 15px;
   font-weight: 600;
-  margin-bottom: 12px;
-  height: 38px;
+  margin-bottom: 10px;
+  line-height: 1.3;
+  color: #1f2937;
+
+  /* 2-line clamp */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* Footer */
+/* =========================
+   PRODUCT FOOTER
+========================= */
 .product-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-/* Price */
 .product-price {
   font-weight: 700;
-  color: #000;
+  color: #111827;
 }
-
-
-
-
-/* Additional Styles for Products Page */
-/* Grid for Products */
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 20px;
-}
-
-/* Card for Products */
-.product-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  transition: transform 0.2s ease;
-}
-
-.product-card:hover {
-  transform: translateY(-4px);
-}
-
-/* Image */
-.product-img img {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-}
-
-/* Info Section */
-.product-info {
-  padding: 12px;
-}
-
-.product-title {
-  font-size: 15px;
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-
-.product-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.product-price {
-  font-weight: bold;
-} 
-
-/*
