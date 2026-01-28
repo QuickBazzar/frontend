@@ -8,7 +8,7 @@ const authHeaders = () => ({
 // Initiate a payment
 export async function initiatePayment(body) {
   try {
-    const url = config.BASE_URL + "/payments";
+    const url = config.BASE_URL + "/payments/";
     const res = await axios.post(url, body, { headers: authHeaders() });
     return res.data;
   } catch (err) {

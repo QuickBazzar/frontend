@@ -18,13 +18,19 @@ export async function getAllProducts() {
 }
 
 // Get products by wholesaler ID for retailer
-export async function getProductsByWholesaler(wholesalerId) {
+export async function getProductsByWholesaler(WholesalerId) {
   try {
-    const url = `${config.BASE_URL}/product/wholesaler/${wholesalerId}`;
-    const response = await axios.get(url, { headers: authHeaders() });
-    return response.data;
+    const response = await axios.get(
+      `${config.BASE_URL}/product/wholesaler/${WholesalerId}`,
+      { headers: authHeaders() }
+    )
+    return response.data
   } catch (error) {
-    return { status: "error", error };
+    return {
+      status: "error",
+      error: "Failed to load products",
+      data: [],
+    }
   }
 }
 
