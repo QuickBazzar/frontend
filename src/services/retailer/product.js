@@ -10,10 +10,11 @@ const authHeaders = () => ({
 export async function getAllProducts() {
   try {
     const url = config.BASE_URL + "/product/all";
-    const response = await axios.get(url, { headers: authHeaders() });
+    const response = await axios.get(url);
     return response.data;
   } catch (error) {
-    return { status: "error", error };
+    console.error(error)
+    return { status: "error", data: [] };
   }
 }
 
