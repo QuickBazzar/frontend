@@ -1,64 +1,81 @@
-import React, { useState } from 'react'
-import { useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { UserContext } from '../App'
 import { useNavigate, Link } from 'react-router-dom'
 import { loginUser } from '../services/user'
 import { toast } from 'react-toastify'
-
+import { checkWholesalerStatus } from '../services/wholesaler'
 
 function Signin() {
-    const {setUser} = useContext(UserContext)
-    const navigate = useNavigate()
-    const [email, setEmail] = useState('')
-    const [password, setPasword] = useState('')
+  const { setUser } = useContext(UserContext)
+  const navigate = useNavigate()
 
-    const signin = async () => {
-        try {
-            const result = await loginUser(email, password)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-            if (!result) {
-                toast.error("No response from server")
-                return
-            }
+  const signin = async () => {
+  try {
+    const result = await loginUser(email, password)
 
-            if (result.status === 'success') {
-                const { token, role, name } = result.data
-
-                sessionStorage.setItem("token", token)
-                sessionStorage.setItem("role", role)
-
-                setUser({ token, role, name })
-
-                toast.success('Login Successful')
-
-                if (role === 'ADMIN') navigate('/admin')
-                else if (role === 'RETAILER') navigate('/retailer')
-                else if (role === 'WHOLESALER') navigate('/wholesaler')
-            } else {
-                toast.error(result.error || 'Invalid credentials')
-            }
-        } catch (err) {
-            console.log(err)
-            toast.error('Something went wrong')
-        }
+    if (!result || result.status !== 'success') {
+      toast.error(result?.error || 'Invalid credentials')
+      return
     }
+
+    const { token, role, name } = result.data
+
+    const userData = { token, role, name }
+    sessionStorage.setItem('user', JSON.stringify(userData))
+    localStorage.setItem('token', token) // <-- add this line
+    setUser(userData)
+
+    toast.success('Login successful')
+    localStorage.setItem('token', token)
+
+    if (role === 'ADMIN') {
+      navigate('/admin')
+    } else if (role === 'RETAILER') {
+      navigate('/retailer')
+    } else if (role === 'WHOLESALER') {
+      const response = await checkWholesalerStatus()
+      const isRegistered = response?.data?.data?.isRegistered
+      if (isRegistered) {
+        navigate('/wholesaler/dashboard')
+      } else {
+        navigate('/wholesaler/register')
+      }
+    }
+  } catch (err) {
+    console.error(err)
+    toast.error('Something went wrong')
+  }
+}
+
+
   return (
-    <div className='container w-50'>
-        <div className="mb-3 mt-3">
-            <label for="inputEmail" className="form-label">Email address</label>
-            <input type="email" className="form-control" id="inputEmail" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} />
-        </div>
-        <div className='mb-3'>
-            <label for="inputPassword" className="form-label">Password</label>
-            <input type="password" id="inputPassword" className="form-control" placeholder='password' onChange={e => setPasword(e.target.value)} />
-        </div>
-        <div className='mb-3'>
-            <button className='btn btn-success' onClick={signin}>Signin</button>
-        </div>
-        <div>
-            <label> Don't have an account ?</label>
-            <Link to="/register"> Click Here</Link>
-        </div>
+    <div className="container w-50 mt-4">
+      <h3>Signin</h3>
+
+      <input
+        className="form-control mb-2"
+        placeholder="Email"
+        onChange={e => setEmail(e.target.value)}
+      />
+
+      <input
+        type="password"
+        className="form-control mb-2"
+        placeholder="Password"
+        onChange={e => setPassword(e.target.value)}
+      />
+
+      <button className="btn btn-success" onClick={signin}>
+        Signin
+      </button>
+
+      <div className="mt-2">
+        <span>Don't have an account?</span>
+        <Link to="/register"> Register</Link>
+      </div>
     </div>
   )
 }
