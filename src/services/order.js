@@ -1,39 +1,74 @@
-import axios from "axios";
-import config from "../utils/config";
+import axios from "axios"
+import config from "../utils/config"
 
-export async function getAllOrders() {
+const getAuthHeaders = () => ({
+  Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+})
+
+export async function getWholesalerOrders() {
   try {
-    const user = JSON.parse(sessionStorage.getItem("user"))
-     const token = user?.token
-    const url = "http://localhost:4000/orders"
-    const headers = { Authorization: `Bearer ${user?.token}` }
-
-    const response = await axios.get(url, { headers })
-    return response.data
-  } catch (error) {
-    console.error("getAllOrders error:", error)
-    return { status: "error", data: [] }
-  }
-}
-
-
-export async function updateDeliveryStatus(orderId, status) {
-  try {
-    const user = JSON.parse(sessionStorage.getItem("user"))
-    const token = user?.token
-
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    }
-
-    const response = await axios.patch(
-      `${config.BASE_URL}/orders/${orderId}/status`,
-      { DeliveryStatus: status },
-      { headers }
+    const response = await axios.get(
+      `${config.BASE_URL}/orders/wholesaler/orders`,
+      { headers: getAuthHeaders() }
     )
     return response.data
   } catch (error) {
-    console.error("updateDeliveryStatus Error:", error)
-    return error.response?.data || { status: "error", error }
+    return (
+      error.response?.data || {
+        status: "error",
+        error: "Failed to fetch wholesaler orders",
+        data: [],
+      }
+    )
+  }
+}
+
+export async function getAllOrders() {
+  try {
+    const response = await axios.get(
+      `${config.BASE_URL}/orders/`,
+      { headers: getAuthHeaders() }
+    )
+    return response.data
+  } catch (error) {
+    return {
+      status: "error",
+      error: "Failed to fetch all orders",
+      data: [],
+    }
+  }
+}
+
+// GET RETAILER ORDERS
+export async function getRetailerOrders() {
+  try {
+    const response = await axios.get(
+      `${config.BASE_URL}/orders/retailer/orders`,
+      { headers: getAuthHeaders() }
+    )
+    return response.data
+  } catch (error) {
+    return error.response?.data || {
+      status: "error",
+      error: "Failed to fetch retailer orders",
+      data: [],
+    }
+  }
+}
+
+// 🔹 UPDATE DELIVERY STATUS
+export async function updateDeliveryStatus(orderId, status) {
+  try {
+    const response = await axios.patch(
+      `${config.BASE_URL}/orders/${orderId}/status`,
+      { DeliveryStatus: status },
+      { headers: getAuthHeaders() }
+    )
+    return response.data
+  } catch (error) {
+    return error.response?.data || {
+      status: "error",
+      error: "Failed to update delivery status",
+    }
   }
 }
