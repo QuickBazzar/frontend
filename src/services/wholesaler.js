@@ -1,74 +1,89 @@
-import axios from "axios";
-import config from "../utils/config"; // make sure this exists with BASE_URL
+import axios from "axios"
+import config from "../utils/config"
 
-// 🔹 Helper: Get auth headers
-function authHeaders() {
-  const token = localStorage.getItem("token"); // or sessionStorage if you store it there
-  return token ? { Authorization: `Bearer ${token}` } : {};
-}
+const getAuthHeaders = () => ({
+  Authorization: `Bearer ${sessionStorage.getItem("token")}`
+})
 
-// 🔍 Check wholesaler profile (first-time or existing)
 export async function getMyWholesalerProfile() {
   try {
-    const url = config.BASE_URL + "/wholesaler/my";
-    const response = await axios.get(url, { headers: authHeaders() });
-    return response.data;
-  } catch (error) {
-    return { status: "error", error };
-  }
-}
-
-// ➕ Register wholesaler (first time only)
-export async function registerWholesaler(data) {
-  try {
-    const url = config.BASE_URL + "/wholesaler/add";
-    const response = await axios.post(url, data, { headers: authHeaders() });
-    return response.data;
-  } catch (error) {
-    return { status: "error", error };
-  }
-}
-
-// 🔐 Optional: Check if wholesaler is already registered (alternative way)
-export async function checkWholesalerStatus() {
-  const user = JSON.parse(sessionStorage.getItem("user"));
-  if (!user || !user.token) return { status: "error", error: "No token found" };
-
-  try {
-    return axios.get(`${config.BASE_URL}/wholesaler/status`, {
-      headers: { Authorization: `Bearer ${user.token}` },
-    });
-  } catch (error) {
-    return { status: "error", error };
-  }
-}
-
-export async function getWholesalerFullProfile() {
-  try {
-    const url = config.BASE_URL + "/wholesaler/profile"
-    const response = await axios.get(url, { headers: authHeaders() })
+    const response = await axios.get(
+      `${config.BASE_URL}/wholesaler/my`,
+      { headers: getAuthHeaders() }
+    )
     return response.data
   } catch (error) {
-    return { status: "error", error }
+    return error.response?.data || {
+      status: "error",
+      error: "Failed to fetch wholesaler profile",
+      data: null
+    }
+  }
+}
+
+export async function registerWholesaler(data) {
+  try {
+    const response = await axios.post(
+      `${config.BASE_URL}/wholesaler/add`,
+      data,
+      { headers: getAuthHeaders() }
+    )
+    return response.data
+  } catch (error) {
+    return error.response?.data || {
+      status: "error",
+      error: "Failed to register wholesaler",
+    }
   }
 }
 
 export async function updateWholesalerProfile(data) {
   try {
-    const url = config.BASE_URL + "/wholesaler/update"
     const response = await axios.put(
-      url,
-      data, // 👈 JSON body
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json"
-        }
-      }
+      `${config.BASE_URL}/wholesaler/update`,
+      data,
+      { headers: getAuthHeaders() }
     )
     return response.data
   } catch (error) {
-    return { status: "error", error }
+    return error.response?.data || {
+      status: "error",
+      error: "Failed to update wholesaler profile"
+    }
   }
 }
 
+export async function getWholesalerFullProfile() {
+  try {
+    const response = await axios.get(
+      `${config.BASE_URL}/wholesaler/profile`,
+      { headers: getAuthHeaders() }
+    )
+    return response.data
+  } catch (error) {
+    return {
+      status: "error",
+      error: error.response?.data?.error || "Failed to fetch profile",
+    }
+  }
+}
+
+export async function getWholesalerDashboardStats() {
+  try {
+    const headers = {
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    }
+
+    const response = await axios.get(
+      `${config.BASE_URL}/wholesaler/dashboard`,
+      { headers }
+    )
+
+    return response.data
+  } catch (error) {
+    return error.response?.data || {
+      status: "error",
+      error: "Failed to load dashboard",
+    }
+  }
+}
