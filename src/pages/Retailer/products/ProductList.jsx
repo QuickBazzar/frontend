@@ -14,6 +14,7 @@ function ProductList() {
   const loadProducts = async () => {
     setLoading(true);
     const result = await getAllProducts();
+    console.log("FULL API RESPONSE:", result);
     if (result.status === "success" && Array.isArray(result.data)) {
       setProducts(result.data);
     } else {
@@ -44,6 +45,7 @@ function ProductList() {
               name={p.ProductName}
               price={p.Price}
               image={p.ProductImage}
+              description={p.Description}
             />
           ))}
       </div>
