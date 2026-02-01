@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import WholesalerNavbar from './WholesalerNavbar'
 import { addProduct } from '../../services/product'
 
 function AddProduct() {
   const navigate = useNavigate()
+  const fileInputRef = useRef(null)
 
   const [ProductName, setProductName] = useState('')
   const [Category, setCategory] = useState('')
@@ -39,9 +39,8 @@ function AddProduct() {
 
     try {
       const response = await addProduct(formData)
-      console.log('FULL RESPONSE:', response.data)
 
-      if (response.data.status === 'success') {
+      if (response.status === 'success') {
         toast.success('Product added successfully')
 
         // reset form
@@ -52,9 +51,13 @@ function AddProduct() {
         setStockQuantity('')
         setProductImage(null)
 
+        if (fileInputRef.current) {
+          fileInputRef.current.value = ''
+        }
+
         navigate('/wholesaler/view-products')
       } else {
-        toast.error(response.data.error || 'Failed to add product')
+        toast.error(response.error || 'Failed to add product')
       }
     } catch (err) {
       console.error(err)
@@ -63,63 +66,67 @@ function AddProduct() {
   }
 
   return (
-    <>
-      <WholesalerNavbar />
+    <div className="container w-50 mt-4">
+      <h4>Add Product</h4>
 
-      <div className="container w-50 mt-4">
-        <h4>Add Product</h4>
+      <form onSubmit={handleSubmit}>
+        <input
+          className="form-control mb-2"
+          placeholder="Product Name"
+          value={ProductName}
+          onChange={(e) => setProductName(e.target.value)}
+          required
+        />
 
-        <form onSubmit={handleSubmit}>
-          <input
-            className="form-control mb-2"
-            placeholder="Product Name"
-            value={ProductName}
-            onChange={(e) => setProductName(e.target.value)}
-          />
+        <input
+          className="form-control mb-2"
+          placeholder="Category"
+          value={Category}
+          onChange={(e) => setCategory(e.target.value)}
+          required
+        />
 
-          <input
-            className="form-control mb-2"
-            placeholder="Category"
-            value={Category}
-            onChange={(e) => setCategory(e.target.value)}
-          />
+        <textarea
+          className="form-control mb-2"
+          placeholder="Description"
+          value={Description}
+          onChange={(e) => setDescription(e.target.value)}
+          rows="3"
+          required
+        />
 
-          <textarea
-            className="form-control mb-2"
-            placeholder="Description"
-            value={Description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows="3"
-          />
+        <input
+          type="number"
+          className="form-control mb-2"
+          placeholder="Price"
+          value={Price}
+          onChange={(e) => setPrice(e.target.value)}
+          required
+        />
 
-          <input
-            type="number"
-            className="form-control mb-2"
-            placeholder="Price"
-            value={Price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
+        <input
+          type="number"
+          className="form-control mb-2"
+          placeholder="Stock Quantity"
+          value={StockQuantity}
+          onChange={(e) => setStockQuantity(e.target.value)}
+          required
+        />
 
-          <input
-            type="number"
-            className="form-control mb-2"
-            placeholder="Stock Quantity"
-            value={StockQuantity}
-            onChange={(e) => setStockQuantity(e.target.value)}
-          />
+        <input
+          type="file"
+          className="form-control mb-3"
+          accept="image/*"
+          ref={fileInputRef}
+          onChange={(e) => setProductImage(e.target.files[0])}
+          required
+        />
 
-          <input
-            type="file"
-            className="form-control mb-3"
-            onChange={(e) => setProductImage(e.target.files[0])}
-          />
-
-          <button className="btn btn-success w-100">
-            Add Product
-          </button>
-        </form>
-      </div>
-    </>
+        <button className="btn btn-success w-100">
+          Add Product
+        </button>
+      </form>
+    </div>
   )
 }
 
