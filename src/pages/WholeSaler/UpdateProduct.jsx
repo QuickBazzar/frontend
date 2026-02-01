@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import WholesalerNavbar from './WholesalerNavbar'
 import { getProductById, updateProduct } from '../../services/product'
 
 function UpdateProduct() {
@@ -12,12 +11,13 @@ function UpdateProduct() {
     ProductName: '',
     Category: '',
     Price: '',
-    StockQuantity: ''
+    StockQuantity: '',
+    Description: '',
   })
 
   const [image, setImage] = useState(null)
 
-  // ✅ LOAD PRODUCT
+  // 🔹 Load product
   useEffect(() => {
     loadProduct()
   }, [])
@@ -26,36 +26,39 @@ function UpdateProduct() {
     try {
       const res = await getProductById(id)
 
-      if (res.data.status === 'success') {
+      if (res?.status === 'success' && res.data) {
         setProduct({
-          ProductName: res.data.data.ProductName,
-          Category: res.data.data.Category,
-          Price: res.data.data.Price,
-          StockQuantity: res.data.data.StockQuantity
+          ProductName: res.data.ProductName || '',
+          Category: res.data.Category || '',
+          Price: res.data.Price || '',
+          StockQuantity: res.data.StockQuantity || '',
+          Description: res.data.Description || '', // ✅ added
         })
       } else {
-        toast.error('Failed to load product')
+        toast.error(res?.error || 'Failed to load product')
       }
     } catch (err) {
+      console.error(err)
       toast.error('Server error')
     }
   }
 
-  // ✅ THIS WAS MISSING
+  // 🔹 Handle form change
   const handleChange = (e) => {
     setProduct({
       ...product,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     })
   }
 
-  // ✅ UPDATE PRODUCT
+  // 🔹 Update product
   const handleUpdate = async (e) => {
     e.preventDefault()
 
     const formData = new FormData()
     formData.append('ProductName', product.ProductName)
     formData.append('Category', product.Category)
+    formData.append('Description', product.Description) 
     formData.append('Price', product.Price)
     formData.append('StockQuantity', product.StockQuantity)
 
@@ -66,75 +69,83 @@ function UpdateProduct() {
     try {
       const res = await updateProduct(id, formData)
 
-      if (res.data.status === 'success') {
+      if (res?.status === 'success') {
         toast.success('Product updated successfully')
         navigate('/wholesaler/view-products')
       } else {
-        toast.error(res.data.error || 'Update failed')
+        toast.error(res?.error || 'Update failed')
       }
     } catch (err) {
+      console.error(err)
       toast.error('Server error')
     }
   }
 
   return (
-    <>
-      <WholesalerNavbar />
+    <div className="container w-50 mt-4">
+      <h3 className="mb-3">Edit Product</h3>
 
-      <div className="container w-50 mt-4">
-        <h3 className="mb-3">Edit Product</h3>
+      <form onSubmit={handleUpdate}>
+        <input
+          className="form-control mb-2"
+          name="ProductName"
+          value={product.ProductName}
+          onChange={handleChange}
+          placeholder="Product Name"
+          required
+        />
 
-        <form onSubmit={handleUpdate}>
-          <input
-            className="form-control mb-2"
-            name="ProductName"
-            value={product.ProductName}
-            onChange={handleChange}
-            placeholder="Product Name"
-            required
-          />
+        <input
+          className="form-control mb-2"
+          name="Category"
+          value={product.Category}
+          onChange={handleChange}
+          placeholder="Category"
+          required
+        />
 
-          <input
-            className="form-control mb-2"
-            name="Category"
-            value={product.Category}
-            onChange={handleChange}
-            placeholder="Category"
-            required
-          />
+        <input
+          type="number"
+          className="form-control mb-2"
+          name="Price"
+          value={product.Price}
+          onChange={handleChange}
+          placeholder="Price"
+          required
+        />
 
-          <input
-            type="number"
-            className="form-control mb-2"
-            name="Price"
-            value={product.Price}
-            onChange={handleChange}
-            placeholder="Price"
-            required
-          />
+        <textarea
+          className="form-control mb-2"
+          name="Description"          // ✅ added
+          placeholder="Description"
+          value={product.Description} // ✅ controlled
+          onChange={handleChange}
+          rows="3"
+          required
+        />
 
-          <input
-            type="number"
-            className="form-control mb-3"
-            name="StockQuantity"
-            value={product.StockQuantity}
-            onChange={handleChange}
-            placeholder="Stock Quantity"
-            required
-          />
+        <input
+          type="number"
+          className="form-control mb-3"
+          name="StockQuantity"
+          value={product.StockQuantity}
+          onChange={handleChange}
+          placeholder="Stock Quantity"
+          required
+        />
 
-          <input
-            type="file"
-            className="form-control mb-3"
-            onChange={(e) => setImage(e.target.files[0])}
-          />
+        <input
+          type="file"
+          className="form-control mb-3"
+          accept="image/*"
+          onChange={(e) => setImage(e.target.files[0])}
+        />
 
-          <button className="btn btn-success w-100">
-            Update Product
-          </button>
-        </form>
-      </div>
-    </>
+        <button className="btn btn-success w-100">
+          Update Product
+        </button>
+      </form>
+    </div>
   )
 }
 
