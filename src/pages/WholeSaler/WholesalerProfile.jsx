@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import WholesalerNavbar from "./WholesalerNavbar"
 import { getWholesalerFullProfile } from "../../services/wholesaler"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -15,15 +14,20 @@ function WholesalerProfile() {
   }, [])
 
   const fetchProfile = async () => {
-    const res = await getWholesalerFullProfile()
+    try {
+      const res = await getWholesalerFullProfile()
 
-    if (res.status === "success" && res.data.length > 0) {
-      setProfile(res.data[0])
-    } else {
-      toast.error("Failed to load profile")
+      if (res?.status === "success" && res.data?.length > 0) {
+        setProfile(res.data[0])
+      } else {
+        toast.error("Failed to load profile")
+      }
+    } catch (err) {
+      console.error(err)
+      toast.error("Server error")
+    } finally {
+      setLoading(false)
     }
-
-    setLoading(false)
   }
 
   if (loading) {
@@ -35,39 +39,28 @@ function WholesalerProfile() {
   }
 
   return (
-    <>
-      <WholesalerNavbar />
+    <div className="container mt-4">
+      <h3 className="mb-4">My Profile</h3>
 
-      <div className="container mt-4">
-        <h3 className="mb-4">My Profile</h3>
+      <div className="card shadow-sm p-4">
+        <p><b>Name:</b> {profile.Name}</p>
+        <p><b>Email:</b> {profile.Email}</p>
+        <p><b>Business Name:</b> {profile.BusinessName}</p>
+        <p><b>Contact Number:</b> {profile.ContactNumber}</p>
+        <p><b>Address:</b> {profile.Address}</p>
+        <p><b>GST Number:</b> {profile.GSTNumber}</p>
 
-        <div className="card shadow-sm p-4">
-
-          <p><b>Name:</b> {profile.Name}</p>
-
-          <p><b>Email:</b> {profile.Email}</p>
-
-          <p><b>Business Name:</b> {profile.BusinessName}</p>
-
-          <p><b>Contact Number:</b> {profile.ContactNumber}</p>
-
-          <p><b>Address:</b> {profile.Address}</p>
-
-          <p><b>GST Number:</b> {profile.GSTNumber}</p>
-
-          {/* UPDATE BUTTON */}
-          <div className="mt-4 text-end">
-            <button
-              className="btn btn-primary"
-              onClick={() => navigate("/wholesaler/update-profile")}
-            >
-              Update Profile
-            </button>
-          </div>
-
+        {/* UPDATE BUTTON */}
+        <div className="mt-4 text-end">
+          <button
+            className="btn btn-primary"
+            onClick={() => navigate("/wholesaler/update-profile")}
+          >
+            Update Profile
+          </button>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
