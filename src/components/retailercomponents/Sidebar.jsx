@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom"
 const RetailerSidebar = () => {
   return (
     <>
+      {/* DESKTOP SIDEBAR */}
       <div
         className="bg-dark text-white px-3 py-3 d-none d-lg-block"
         style={{ width: "250px", minHeight: "100vh" }}
@@ -12,6 +13,7 @@ const RetailerSidebar = () => {
         <SidebarLinks />
       </div>
 
+      {/* MOBILE SIDEBAR (OFFCANVAS) */}
       <div
         className="offcanvas offcanvas-start bg-dark text-white"
         tabIndex="-1"

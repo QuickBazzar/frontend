@@ -1,9 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import config from "@/utils/config";
 import { addToCartAction } from "@/redux/slices/cartSlice";
 
-function ProductCard({ pid, name, price, image }) {
+function ProductCard({ pid, name, price, image, description }) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
 
@@ -15,9 +14,15 @@ function ProductCard({ pid, name, price, image }) {
     quantity: 1,
   };
 
-  const imageURL = image
-    ? `${config.BASE_URL}/productimages/${image}`
-    : "/no-image.png";
+  // 🔹 Handle server / public image
+  const IMAGE_BASE_URL = "https://icthpupomoxfecbwsxwx.supabase.co/storage/v1/object/public/quickbazzar/products/";
+
+  const imageURL =
+    image && image.startsWith("http")
+      ? image
+      : image
+      ? `${IMAGE_BASE_URL}${image}`
+      : "/no-image.png";
 
   const handleAddToCart = () => {
     const exists = cartItems.find((p) => p.pid === pid);
@@ -33,24 +38,31 @@ function ProductCard({ pid, name, price, image }) {
 
   return (
     <div className="product-card">
+      {/* IMAGE */}
       <div className="product-img">
         <img
           src={imageURL}
           alt={name}
+          loading="lazy"
           onError={(e) => {
-            e.target.onerror = null; 
+            e.target.onerror = null;
             e.target.src = "/no-image.png";
           }}
         />
       </div>
 
+      {/* INFO */}
       <div className="product-info">
         <h6 className="product-title">{name}</h6>
+
+        {description && (
+          <p className="product-description">{description}</p>
+        )}
 
         <div className="product-footer">
           <span className="product-price">₹ {price}</span>
           <button
-            className="btn btn-warning btn-sm"
+            className="btn btn-warning btn-sm px-2 py-1"
             onClick={handleAddToCart}
           >
             Add
@@ -62,5 +74,3 @@ function ProductCard({ pid, name, price, image }) {
 }
 
 export default ProductCard;
-
-
