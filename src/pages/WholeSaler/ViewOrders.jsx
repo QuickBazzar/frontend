@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import WholesalerNavbar from './WholesalerNavbar'
 import DataTable from '../../components/DataTable'
-import { getAllOrders, updateDeliveryStatus } from '../../services/order'
+import { getWholesalerOrders, updateDeliveryStatus } from '../../services/order'
 
 function ViewOrders() {
   const [orders, setOrders] = useState([])
@@ -11,15 +10,15 @@ function ViewOrders() {
     loadOrders()
   }, [])
 
-  // 🔹 Fetch orders
+  // 🔹 Fetch wholesaler orders only
   const loadOrders = async () => {
     try {
-      const res = await getAllOrders()
+      const res = await getWholesalerOrders()
 
       if (res?.status === 'success') {
-        setOrders(res.data)
+        setOrders(res.data || [])
       } else {
-        toast.error(res?.data || 'Failed to load orders')
+        toast.error(res?.error || 'Failed to load orders')
       }
     } catch (err) {
       console.error(err)
@@ -36,7 +35,7 @@ function ViewOrders() {
         toast.success('Delivery status updated')
         loadOrders()
       } else {
-        toast.error(res?.data || 'Failed to update status')
+        toast.error(res?.error || 'Failed to update status')
       }
     } catch (err) {
       console.error(err)
@@ -60,14 +59,8 @@ function ViewOrders() {
 
   // 🔹 DataTable columns
   const columns = [
-    {
-      key: 'OrderID',
-      label: 'Order ID',
-    },
-    {
-      key: 'RetailerID',
-      label: 'Retailer ID',
-    },
+    { key: 'OrderID', label: 'Order ID' },
+    { key: 'RetailerID', label: 'Retailer ID' },
     {
       key: 'OrderDate',
       label: 'Order Date',
@@ -131,18 +124,11 @@ function ViewOrders() {
   ]
 
   return (
-    <>
-      <WholesalerNavbar />
+    <div className="container-fluid">
+      <h3 className="text-center mb-4">Wholesaler Orders</h3>
 
-      <div className="container mt-4">
-        <h3 className="text-center mb-4">Retailer Orders</h3>
-
-        <DataTable
-          columns={columns}
-          data={orders}
-        />
-      </div>
-    </>
+      <DataTable columns={columns} data={orders} />
+    </div>
   )
 }
 
