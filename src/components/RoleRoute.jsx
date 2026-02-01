@@ -1,12 +1,13 @@
-import { Navigate } from 'react-router-dom'
 import { useContext } from 'react'
+import { Navigate } from 'react-router-dom'
 import { UserContext } from '../App'
 
-const RoleRoute = ({ allowedRoles, children }) => {
+function RoleRoute({ children, allowedRoles }) {
   const { user } = useContext(UserContext)
 
-  if (!user || !user.token) {
-    return <Navigate to="/" />
+  // ✅ IMPORTANT: block only AFTER checking sessionStorage
+  if (user === null) {
+    return <h3>Loading...</h3>
   }
 
   if (!allowedRoles.includes(user.role)) {
