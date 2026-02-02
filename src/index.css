@@ -1,22 +1,56 @@
-/* Base Reset */
+/* ============================= */
+/* Tailwind Directives (TOP ONLY) */
+/* ============================= */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================= */
+/* Global Reset */
+/* ============================= */
 * {
   box-sizing: border-box;
 }
 
+/* ============================= */
+/* Root Defaults */
+/* ============================= */
+:root {
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================= */
 /* Body */
+/* ============================= */
 body {
   margin: 0;
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   overflow-x: hidden;
-  background-color: #f8f9fa; /* Bootstrap light bg */
+  background-color: #f8f9fa; /* Bootstrap light background */
 }
 
+/* ============================= */
 /* Links */
+/* ============================= */
 a {
+  font-weight: 500;
+  color: #646cff;
   text-decoration: none;
 }
 
+a:hover {
+  color: #535bf2;
+}
+
+/* ============================= */
 /* Dashboard Hover Effect */
+/* ============================= */
 .dashboard-card {
   cursor: pointer;
   transition: all 0.25s ease-in-out;
@@ -27,7 +61,20 @@ a {
   box-shadow: 0 12px 25px rgba(161, 160, 160, 0.15);
 }
 
-/* Optional: Improve table scrolling on mobile */
-.table-responsive {
-  overflow-x: auto;
+/* ============================= */
+/* Light Mode Overrides */
+/* ============================= */
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+
+  a:hover {
+    color: #747bff;
+  }
+
+  button {
+    background-color: #f9f9f9;
+  }
 }
