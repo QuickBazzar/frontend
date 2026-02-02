@@ -20,9 +20,7 @@ const CreateWholesalerProfile = () => {
 
   const navigate = useNavigate()
 
-  /* =======================
-     LOAD PROFILE IF EXISTS
-  ======================= */
+  
   useEffect(() => {
     loadProfile()
   }, [])
@@ -47,16 +45,12 @@ const CreateWholesalerProfile = () => {
     }
   }
 
-  /* =======================
-     HANDLE INPUT
-  ======================= */
+  
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  /* =======================
-     SUBMIT FORM
-  ======================= */
+  
   const submit = async (e) => {
     e.preventDefault()
 
@@ -87,9 +81,7 @@ const CreateWholesalerProfile = () => {
     }
   }
 
-  /* =======================
-     UI
-  ======================= */
+  
   return (
     <div className="row justify-content-center mt-5">
       <div className="col-md-6">
