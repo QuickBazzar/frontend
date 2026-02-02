@@ -1,110 +1,108 @@
-import { useEffect, useState } from "react"
-import DataTable from "../../../components/DataTable"
-import { toast } from "react-toastify"
-import { formatCurrency, formatDateTime } from "../../../utils/formatters"
-import { getAllPayments, getPaymentsByMode, updatePaymentStatus } from "../../../services/admin/payment"
+import { useEffect, useState } from 'react'
+import { deleteProduct, getLowStockProducts, updateProductStatus } from '../../../services/admin/product'
+import { toast } from 'react-toastify'
+import DataTable from '../../../components/DataTable';
 
-const PaymentsList = () => {
-  const [payments, setPayments] = useState([])
-  const [filtered, setFiltered] = useState([])
-  const [mode, setMode] = useState("ALL")
-  const [loading, setLoading] = useState(true)
+const LowStockProducts = () => {
+    const [products, setProducts] = useState([])
+    const [search, setSearch] = useState('')
+    const [filterd, setFiltered] = useState([])
+    const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    loadPayments()
-  }, [])
+    useEffect(() => {
+        loadProducts()
+    },[])
 
-  useEffect(() => {
-    filterByMode()
-  }, [mode, payments])
+    useEffect(() => {
+        applySearch()
+    }, [search, products])
 
-  const loadPayments = async () => {
-    const result = await getAllPayments()
-    if (result?.status === "success") {
-        console.log(result.data)
-      setPayments(result.data)
-      setFiltered(result.data)
+    const loadProducts = async () => {
+        const result = await getLowStockProducts()
+        if(result?.status == "success"){
+            setProducts(result.data)
+            setFiltered(result.data)
+        }
+        setLoading(false)
     }
-    setLoading(false)
-  }
 
-  const filterByMode = async () => {
-    if (mode === "ALL") {
-      setFiltered(payments)
-    } else {
-      const result = await getPaymentsByMode(mode)
-      if (result?.status === "success") {
-        setFiltered(result.data)
-      }
+    const applySearch = () => {
+        let data = [...products]
+        if(search.trim()) {
+            data = data.filter(p => 
+                p.ProductName.toLowerCase().includes(search.toLowerCase())
+            )
+        }
+        setFiltered(data)
     }
-  }
 
-  const handleStatusChange = async (payment, status) => {
-    const result = await updatePaymentStatus(payment.PaymentID, status)
-    if (result?.status === "success") {
-      toast.success("Payment status updated")
-      loadPayments()
-    } else {
-      toast.error("Update failed")
+    const handelDelete = async(product) => {
+        if(!window.confirm(`Do you want to delete ${product.product}?`)) return
+
+        const result = await deleteProduct(product.ProductID)
+        if(result?.status == "success"){
+            toast.success("Product deleted")
+            loadProducts()
+        }
+        else{
+            toast.error("Delete failed")
+        }
     }
-  }
 
-  const columns = [
-    { label: "Payment ID", key: "PaymentID" },
-    { label: "Order ID", key: "OrderID" },
-    {
-      label: "Amount",
-      key: "Amount",
-      render: (row) => formatCurrency(row.Amount),
-    },
-    { label: "Mode", key: "PaymentMode" },
-    {
-      label: "Date",
-      key: "PaymentDate",
-      render: (row) => formatDateTime(row.PaymentDate),
-    },
-  ]
+    const handleToggleStatus = async(product) => {
+        const result = await updateProductStatus(
+            product.ProductID,
+            !product.IsActive
+        )
 
-  const actions = [
+        if(result?.status == "success"){
+            toast.success("Status updated")
+            loadProducts()
+        } else{
+            toast.error("Update failed")
+        }
+    }
+
+    const columns = [
+        {label: "ID", key: "ProductID"},
+        {label: "Name", key: "ProductName"},
+        {label: "Category", key: "Category"},
+        {label: "Stock", key: "StockQuantity"},
+        {label: "Active", key: "IsActive"},
+    ]
+
+    const actions = [
     {
-      label: "Mark Paid",
-      className: "btn-success",
-      onClick: (p) => handleStatusChange(p, "PAID"),
+        label: "BLock / Unblock",
+        className: "btn-warning",
+        onClick: handleToggleStatus,
     },
     {
-      label: "Mark Failed",
-      className: "btn-danger",
-      onClick: (p) => handleStatusChange(p, "FAILED"),
+        label: "Delete",
+        className: "btn-danger",
+        onClick: handelDelete,
     },
-  ]
+    ]
 
-  if (loading) return <p>Loading payments...</p>
-
+    if(loading) return <p>Loading low-stock products...</p>
   return (
-    <div className="container mt-3">
-      <h3>Payment Reports</h3>
+    <div className='container mt-3'>
+        <h3 className='text-danger'>Low Stock Products</h3>
 
-      <div className="mb-3 w-25">
-        <select
-          className="form-select"
-          value={mode}
-          onChange={(e) => setMode(e.target.value)}
-        >
-          <option value="ALL">All Modes</option>
-          <option value="CASH">Cash</option>
-          <option value="UPI">UPI</option>
-          <option value="CARD">Card</option>
-          <option value="WALLET">Wallet</option>
-        </select>
-      </div>
+        <input
+            className='form-control form-control-sm mb-3 w-25'
+            placeholder='Search product'
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}    
+        />
 
-      <DataTable
-        columns={columns}
-        data={filtered}
-        actions={actions}
-      />
+        <DataTable
+            columns={columns}
+            data={filterd}
+            actions={actions}
+        />
     </div>
   )
 }
 
-export default PaymentsList
+export default LowStockProducts

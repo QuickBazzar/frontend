@@ -10,7 +10,7 @@ export const PaymentReports = () => {
 
   useEffect(() => {
     loadData()
-  }, [type])   // 🔥 reload when type changes
+  }, [type])
 
   const loadData = async () => {
     setLoading(true)
