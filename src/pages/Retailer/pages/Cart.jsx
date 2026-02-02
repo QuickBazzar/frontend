@@ -41,22 +41,24 @@ function Cart() {
 
       //Create Order
       const orderResult = await createOrder(total);
+      console.log("Order result:", orderResult);
       if (orderResult.status !== "success") {
         toast.error("Order creation failed");
         return;
       }
-      const orderId = orderResult.data.insertId;
+      const orderId = orderResult.data.OrderID;
 
 
       //Add Order Items
       for (const item of cartItems) {
         const itemResult = await addOrderItem(orderId, item);
+        console.log("Add order item result:", itemResult);
         if (itemResult.status !== "success") {
-          toast.error("Failed to add order item");
+          toast.error(itemResult.error || "Failed to add order item");
           return;
         }
       }
-      //  toast.success("Order placed successfully 🧾");
+
       //Clear Cart
       dispatch(clearCartAction());
 

@@ -4,7 +4,7 @@ import config from "../../utils/config";
 // Create a new order
 export async function createOrder(subTotal) {
   try {
-    const url = config.BASE_URL + "/order";
+    const url = config.BASE_URL + "/orders/";
     const headers = {Authorization: "Bearer " + sessionStorage.getItem("token"),};
 
     const response = await axios.post(url,{ SubTotal: subTotal },{ headers });
@@ -14,11 +14,10 @@ export async function createOrder(subTotal) {
   }
 }
 
-
 // Add an item to an order
 export async function addOrderItem(orderId, item) {
   try {
-    const url = config.BASE_URL + "/orderitem";
+    const url = config.BASE_URL + "/orderitem/";
     const headers = { Authorization: "Bearer " + sessionStorage.getItem("token"), };
 
     const body = {
@@ -31,7 +30,12 @@ export async function addOrderItem(orderId, item) {
     const response = await axios.post(url, body, { headers });
     return response.data;
   } catch (error) {
-    return { status: "error", error };
+    return (
+      error.response?.data || {
+        status: "error",
+        error: "Failed to add order item",
+      }
+    )
   }
 }
 
@@ -39,7 +43,7 @@ export async function addOrderItem(orderId, item) {
 // Get all orders for the retailer
 export async function getRetailerOrders() {
   try {
-    const url = config.BASE_URL + "/order/retailer/orders";
+    const url = config.BASE_URL + "/orders/retailer/orders";
     const headers = { Authorization: "Bearer " + sessionStorage.getItem("token"), };
 
     const response = await axios.get(url, { headers });
@@ -48,7 +52,6 @@ export async function getRetailerOrders() {
     return { status: "error", error };
   }
 }
-
 
 // Get items for a order by order ID
 export async function getOrderItems(orderId) {
@@ -66,15 +69,17 @@ export async function getOrderItems(orderId) {
 // Cancel an order by order ID
 export async function cancelOrder(orderId) {
   try {
-    const url = `${config.BASE_URL}/order/${orderId}/cancel`;
+    const url = `${config.BASE_URL}/orders/${orderId}/cancel`;
     const headers = { 
       Authorization: "Bearer " + sessionStorage.getItem("token"),
     };
-
     const res = await axios.patch(url, {}, { headers });
+    console.log("Cancel response:", res.data); // Debug log
     return res.data;
   } catch (error) {
-    return { status: "error", error };
+    console.error("cancelOrder error:", error);
+    console.error("Error response:", error.response?.data); // Debug log
+    return { status: "error", error: error.response?.data?.error || error.message };
   }
 }
 

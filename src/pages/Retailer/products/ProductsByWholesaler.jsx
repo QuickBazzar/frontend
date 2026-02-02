@@ -3,11 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 
-import { getProductsByWholesaler } from "@/services/retailer/product";
 import { addToCartAction } from "@/redux/slices/cartSlice";
 import ProductCard from "@/components/retailercomponents/ProductCard";
 import "@/pages/Retailer/styles/products.css";
-
+import { getProductsByWholesaler } from "@/services/retailer/product";
 
 function ProductsByWholesaler() {
   const { wholesalerId } = useParams();
@@ -134,6 +133,7 @@ function ProductsByWholesaler() {
               name={p.ProductName}
               price={p.Price}
               image={p.ProductImage}
+              description={p.Description}
               onAdd={() =>
                 addToCart({
                   pid: p.ProductID,
@@ -152,5 +152,3 @@ function ProductsByWholesaler() {
 }
 
 export default ProductsByWholesaler;
-
-

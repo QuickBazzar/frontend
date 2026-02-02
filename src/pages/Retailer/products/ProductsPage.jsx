@@ -1,6 +1,6 @@
 import { useState } from "react";
 import AllProducts from "./AllProducts";
-import WholesalerList from "@/pages/Wholesaler/WholesalerList";
+import ProductByWholesalerList from "./ProductByWholesalerList";
 
 function ProductsPage() {
   const [view, setView] = useState("ALL");
@@ -34,7 +34,7 @@ function ProductsPage() {
 
       {/* Content */}
       {view === "ALL" && <AllProducts />}
-      {view === "WHOLESALER" && <WholesalerList />}
+      {view === "WHOLESALER" && <ProductByWholesalerList />}
     </div>
   );
 }
