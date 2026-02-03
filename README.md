@@ -1,6 +1,6 @@
 # QuickBazzar – Frontend
 
-🌐 **Live Demo:** [https://frontend-quick-bazzar.vercel.app/](https://frontend-quick-bazzar.vercel.app/)
+🌐 **Live Demo:** [https://quickbazzar.vercel.app/](https://quickbazzar.vercel.app/)
 
 This repository contains the **frontend application for QuickBazzar**, a modern e-commerce platform. The frontend is built with **React** and focuses on performance, clean UI, and seamless integration with the Express backend APIs.
 
